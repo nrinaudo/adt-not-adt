@@ -1,0 +1,602 @@
+<!Doctype html>
+<html>
+    <head>
+        <title>Things that are things, but not other things</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    </head>
+    <body>
+        <textarea id="source">
+class: center, middle
+
+# When is an ADT not an ADT?
+
+[Nicolas Rinaudo] • [@NicolasRinaudo@functional.cafe]
+
+---
+
+## Step 1
+
+```scala
+abstract class Exp
+
+class Num(val value: Int) extends Exp
+class Add(val lhs: Exp, val rhs: Exp) extends Exp
+
+```
+
+---
+
+## Step 2
+
+```scala
+abstract class Exp
+
+class Num(val value: Int) extends Exp
+class Add(val lhs: Exp, val rhs: Exp) extends Exp
+class Bool(val value: Boolean) extends Exp
+class Eq(val lhs: Exp, val rhs: Exp) extends Exp
+
+```
+
+---
+
+## Step 3
+
+```scala
+abstract class Exp:
+  def print: String
+
+```
+
+---
+
+## Step 3
+
+```scala
+class Num(val value: Int) extends Exp:
+  override def print = value.toString
+
+class Add(val lhs: Exp, val rhs: Exp) extends Exp:
+  override def print = s"(${lhs.print} + ${rhs.print})"
+
+class Bool(val value: Boolean) extends Exp:
+  override def print = value.toString
+
+class Eq(val lhs: Exp, val rhs: Exp) extends Exp:
+  override def print = s"(${lhs.print} == ${rhs.print})"
+
+```
+
+---
+
+## Step 3
+
+```scala
+Add(Num(1), Eq(Num(2), Bool(false))).print
+// val res0: String = (1 + (2 == false))
+```
+
+---
+
+## Step 4
+
+Did you notice our example? We're adding ints and booleans.
+Let's fix that, by tagging an expression with the type "it will be evaluated as" (normal form).
+
+---
+
+## Step 4
+
+```scala
+abstract class Exp[T]:
+  def print: String
+
+```
+
+---
+
+## Step 4
+
+```scala
+class Num(val value: Int) extends Exp[Int]:
+  override def print = value.toString
+
+class Add(val lhs: Exp[Int], val rhs: Exp[Int])
+    extends Exp[Int]:
+  override def print = s"(${lhs.print} + ${rhs.print})"
+
+class Bool(val value: Boolean) extends Exp[Boolean]:
+  override def print = value.toString
+
+class Eq[T](val lhs: Exp[T], val rhs: Exp[T])
+    extends Exp[Boolean]:
+  override def print = s"(${lhs.print} == ${rhs.print})"
+
+```
+
+---
+
+## Step 5
+ Now that we've fixed that, we can write an interesting interpreter: evaluation to normal form.
+ This is relatively painful, as we have to modify *every implementation*.
+ Think about what would happen if this was a public library and other people depended on it, and had added their
+ own types?
+
+---
+
+## Step 5
+
+```scala
+abstract class Exp[T]:
+  def print: String
+  def eval: T
+
+```
+
+---
+
+## Step 5
+
+```scala
+class Num(val value: Int) extends Exp[Int]:
+  override def print = value.toString
+  override def eval = value
+
+class Add(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]:
+  override def print = s"(${lhs.print} + ${rhs.print})"
+  override def eval = lhs.eval + rhs.eval
+
+class Bool(val value: Boolean) extends Exp[Boolean]:
+  override def print = value.toString
+  override def eval = value
+
+class Eq[T](val lhs: Exp[T], val rhs: Exp[T]) extends Exp[Boolean]:
+  override def print = s"(${lhs.print} == ${rhs.print})"
+  override def eval = lhs.eval == rhs.eval
+
+```
+
+---
+
+## Step 5
+
+```scala
+Eq(Num(4), Add(Num(1), Num(3))).eval
+// val res1: Boolean = true
+```
+
+---
+
+## Step 6
+
+We've seen that adding new interpreters was quite painful. How about new terms?
+Let's add multiplication. This turns out to be easy, as in, local to our new type only, no breaking change
+for anyone.
+
+---
+
+## Step 6
+
+```scala
+class Mult(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]:
+  override def print = s"(${lhs.print} * ${rhs.print})"
+  override def eval = lhs.eval * rhs.eval
+
+```
+
+---
+
+## Step 6
+
+```scala
+val expr = Eq(Num(4), Mult(Num(1), Num(3)))
+
+expr.print
+// val res2: String = (4 == (1 * 3))
+```
+
+```scala
+expr.eval
+// val res3: Boolean = false
+```
+
+---
+
+## Step 7
+
+Just to hammer the point home: let's add a new interpreter, optimisation, which turns comparison of literals
+to the literal value (eg 1 == 1 to true).
+
+Even though we can try to make things easier by providing a no-op default implementation, we still run in tons
+of issues:
+- we need to override it most of the time, for recursive data types. Otherwise we stop optimising at the root of our
+  abstract syntax tree.
+- while the change will be *source* compatible, it won't be *binary* compatible.
+- ...
+
+If we think about this for a while, our problems are linked to tight coupling between data and behaviours, one of the
+core tennets of modern OOP.
+
+---
+
+## Step 7
+
+```scala
+abstract class Exp[T]:
+  def print: String
+  def eval: T
+  def optimise: Exp[T] = this
+
+```
+
+---
+
+## Step 7
+
+```scala
+class Num(val value: Int) extends Exp[Int]:
+  override def print = value.toString
+  override def eval  = value
+
+```
+
+---
+
+## Step 7
+
+```scala
+class Add(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]:
+  override def print    = s"(${lhs.print} + ${rhs.print})"
+  override def eval     = lhs.eval + rhs.eval
+  override def optimise = Add(lhs.optimise, rhs.optimise)
+
+```
+
+---
+
+## Step 7
+
+```scala
+class Mult(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]:
+  override def print    = s"(${lhs.print} * ${rhs.print})"
+  override def eval     = lhs.eval * rhs.eval
+  override def optimise = Mult(lhs.optimise, rhs.optimise)
+
+```
+
+---
+
+## Step 7
+
+```scala
+class Bool(val value: Boolean) extends Exp[Boolean]:
+  override def print = value.toString
+  override def eval  = value
+
+```
+
+---
+
+## Step 7
+
+```scala
+class Eq[T](val lhs: Exp[T], val rhs: Exp[T]) extends Exp[Boolean]:
+  override def print    = s"(${lhs.print} == ${rhs.print})"
+  override def eval     = lhs.eval == rhs.eval
+
+  override def optimise = (lhs.optimise, rhs.optimise) match
+    case (li: Num, ri: Num)   => Bool(li.value == ri.value)
+    case (lb: Bool, rb: Bool) => Bool(lb.value == rb.value)
+    case (lother, rother)     => Eq(lother, rother)
+
+```
+
+---
+
+## Step 7
+
+```scala
+val expr = Eq(
+  Eq(Num(3), Num(3)),
+  Eq(Add(Num(1), Num(2)), Num(3))
+)
+
+expr.print
+// val res4: String = ((3 == 3) == ((1 + 2) == 3))
+```
+
+```scala
+expr.optimise.print
+// val res5: String = (true == ((1 + 2) == 3))
+```
+
+---
+
+## Step 8
+
+One relatively intuitive way of addressing this pain point would be to decorelate data types and their interpreters.
+This seems pretty natural, since our problem literally comes from that correlation.
+
+For brevity, we'll only do print for the moment.
+
+---
+
+## Step 8
+
+```scala
+abstract class Exp[T]
+
+class Num(val value: Int) extends Exp[Int]
+class Add(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]
+class Mult(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]
+class Bool(val value: Boolean) extends Exp[Boolean]
+class Eq[T](val lhs: Exp[T], val rhs: Exp[T]) extends Exp[Boolean]
+
+```
+
+---
+
+## Step 8
+
+```scala
+def print[T](expr: Exp[T]): String = expr match
+  case i: Num   => i.value.toString
+  case a: Add   => s"${print(a.lhs)} + ${print(a.rhs)}"
+  case m: Mult  => s"${print(m.lhs)} * ${print(m.rhs)}"
+  case b: Bool  => b.value.toString
+  case e: Eq[T] => s"${print(e.lhs)} == ${print(e.rhs)}"
+// 1 warning found
+//   case e: Eq[T] => s"${print(e.lhs)} == ${print(e.rhs)}"
+//        ^
+// ⚠ the type test for Eq[T] cannot be checked at runtime
+```
+
+---
+
+## Step 9
+
+Let's now do eval. Notice how local it is? The decorelation of data and behaviours make adding new behaviours easy.
+
+---
+
+## Step 9
+
+```scala
+def eval[T](expr: Exp[T]): T = expr match
+  case i: Num   => i.value
+  case a: Add   => eval(a.lhs) + eval(a.rhs)
+  case m: Mult  => eval(m.lhs) * eval(m.rhs)
+  case b: Bool  => b.value
+  case e: Eq[T] => eval(e.lhs) == eval(e.rhs)
+// 1 warning found
+//   case e: Eq[T] => eval(e.lhs) == eval(e.rhs)
+//        ^
+// ⚠ the type test for Eq[T] cannot be checked at runtime
+```
+
+---
+
+## Step 10
+
+We'll now add substraction.
+
+Notice how we forgot to update the pattern matches and everything compiles, but fails at runtime. Not nice.
+
+---
+
+## Step 10
+
+```scala
+class Sub(val lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+
+```
+
+---
+
+## Step 11
+This is due to the fact that we're working in an open world: we cannot know all the subtypes of Exp.
+
+Well. We can, if the language supports it (JMOF does not), by flagging Exp as sealed.
+We're now in a closed world, and the compiler forces us to fix our interpreters.
+
+---
+
+## Step 11
+
+```scala
+sealed abstract class Exp[T]
+
+class Num(val value: Int) extends Exp[Int]
+class Add(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]
+class Sub(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]
+class Mult(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]
+class Bool(val value: Boolean) extends Exp[Boolean]
+class Eq[T](val lhs: Exp[T], val rhs: Exp[T]) extends Exp[Boolean]
+
+```
+
+---
+
+## Step 12
+
+
+The syntax is a little bit unpleasant, let's introduce case classes to have proper pattern matches.
+
+At this point, we've seen everything we wanted:
+- sum types (Exp)
+- product types (all the others)
+- ADTs: potentially recursive (Add) sums of products.
+
+Note that this is not strictly necessary, but it's nice to show that Algebraic Data Types make introspection
+ convenient and cheap.
+
+---
+
+## Step 12
+
+```scala
+sealed abstract class Exp[T]
+
+case class Num(value: Int) extends Exp[Int]
+case class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+case class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+case class Mult(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+case class Bool(value: Boolean) extends Exp[Boolean]
+case class Eq[T](lhs: Exp[T], rhs: Exp[T]) extends Exp[Boolean]
+
+```
+
+---
+
+## Step 12
+
+```scala
+def print[T](expr: Exp[T]): String = expr match
+  case Num(value)     => value.toString
+  case Add(lhs, rhs)  => s"${print(lhs)} + ${print(rhs)}"
+  case Sub(lhs, rhs)  => s"${print(lhs)} - ${print(rhs)}"
+  case Mult(lhs, rhs) => s"${print(lhs)} * ${print(rhs)}"
+  case Bool(value)    => value.toString
+  case Eq(lhs, rhs)   => s"${print(lhs)} == ${print(rhs)}"
+
+```
+
+---
+
+## Step 12
+
+```scala
+def eval[T](expr: Exp[T]): T = expr match
+  case Num(value)     => value
+  case Add(lhs, rhs)  => eval(lhs) + eval(rhs)
+  case Sub(lhs, rhs)  => eval(lhs) - eval(rhs)
+  case Mult(lhs, rhs) => eval(lhs) * eval(rhs)
+  case Bool(value)    => value
+  case Eq(lhs, rhs)   => eval(lhs) == eval(rhs)
+
+```
+
+---
+
+## Step 13
+So, new interpreters are very easy. How about new terms?
+Let's add boolean And.
+This is a bit of a nightmare, as we have to update every single interpreter. It's *very* symmetrical to the problem we had with subclassing.
+
+---
+
+## Step 13
+
+```scala
+sealed abstract class Exp[T]
+
+case class Num(value: Int) extends Exp[Int]
+case class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+case class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+case class Mult(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+case class Bool(value: Boolean) extends Exp[Boolean]
+case class And(lhs: Exp[Boolean], rhs: Exp[Boolean]) extends Exp[Boolean]
+case class Eq[T](lhs: Exp[T], rhs: Exp[T]) extends Exp[Boolean]
+
+```
+
+---
+## Step 13
+
+```scala
+def print[T](expr: Exp[T]): String = expr match
+  case Num(value)     => value.toString
+  case Add(lhs, rhs)  => s"${print(lhs)} + ${print(rhs)}"
+  case Sub(lhs, rhs)  => s"${print(lhs)} - ${print(rhs)}"
+  case Mult(lhs, rhs) => s"${print(lhs)} * ${print(rhs)}"
+  case Bool(value)    => value.toString
+  case Eq(lhs, rhs)   => s"${print(lhs)} == ${print(rhs)}"
+  case And(lhs, rhs)  => s"${print(lhs)} && ${print(rhs)}"
+
+```
+
+---
+
+## Step 13
+
+```scala
+def eval[T](expr: Exp[T]): T = expr match
+  case Num(value)     => value
+  case Add(lhs, rhs)  => eval(lhs) + eval(rhs)
+  case Sub(lhs, rhs)  => eval(lhs) - eval(rhs)
+  case Mult(lhs, rhs) => eval(lhs) * eval(rhs)
+  case Bool(value)    => value
+  case Eq(lhs, rhs)   => eval(lhs) == eval(rhs)
+  case And(lhs, rhs)  => eval(lhs) && eval(rhs)
+
+```
+
+---
+
+## Step 14
+
+Just for fun, let's implement optimise. This is mostly to show that with proper pattern matches, it's a little bit nicer.
+
+---
+
+## Step 14
+
+```scala
+def optimize[T](expr: Exp[T]): Exp[T] = expr match
+  case lit: Num       => lit
+  case Add(lhs, rhs)  => Add(optimize(lhs), optimize(rhs))
+  case Sub(lhs, rhs)  => Sub(optimize(lhs), optimize(rhs))
+  case Mult(lhs, rhs) => Mult(optimize(lhs), optimize(rhs))
+  case bool: Bool     => bool
+  case And(lhs, rhs)  => And(optimize(lhs), optimize(rhs))
+  case Eq(lhs, rhs) =>
+    (optimize(lhs), optimize(rhs)) match
+      case (Num(l), Num(r))   => Bool(l == r)
+      case (Bool(l), Bool(r)) => Bool(l == r)
+      case (l, r)             => Eq(l, r)
+
+```
+
+---
+
+## Conclusion
+
+We've seen that picking one approach over the other is a matter of what you want to optimize for:
+- Subclassing: adding new terms is easy, adding new interpreters is hard.
+- Algebraic Data Types: adding new terms is hard, adding new interpreters is easy.
+
+This is known as the Expession Problem. There are various solutions to it:
+- Object Algebras for OOP (https://i.cs.hku.hk/~bruno/papers/oopsla2015.pdf)
+- Tagless Final for languages with type classes and ADTS (https://okmij.org/ftp/tagless-final/course/lecture.pdf)
+- ...
+
+It is, of course, not limited to writing programming languages. This is just a specific example of data modelling
+in general, where you can decide to couple data and behaviours, or to decouple them, and need to be aware of the
+corresponding tradeoffs.
+
+In general, I prefer to optimise for new interpreters: I tend to model my data types once and rarely modify them,
+but on the other hand, I do write quite a few functions that consume them...
+
+---
+class: center, middle
+name: questions
+
+[<img src="img/qr-code.svg" width="50%" height="50%"/>][Slides]
+
+[Nicolas Rinaudo] • [@NicolasRinaudo@functional.cafe]
+[@NicolasRinaudo@functional.cafe]:https://functional.cafe/@NicolasRinaudo
+[Nicolas Rinaudo]:https://nrinaudo.github.io/
+[Slides]:https://nrinaudo.github.io/things-that-are-things/
+    </textarea>
+    <script src="js/remark.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+        var slideshow = remark.create({
+          highlightStyle: 'github',
+          highlightSpans: true,
+          highlightLines: true
+      });
+    </script>
+  </body>
+</html>
