@@ -1,0 +1,11 @@
+digraph {
+    A
+    B[style="invis"]
+    C[style="invis"]
+
+    A -> B[style="invis"]
+    A -> C[style="invis"]
+
+    D[style="invis"]
+    C -> D[style="invis"]
+}

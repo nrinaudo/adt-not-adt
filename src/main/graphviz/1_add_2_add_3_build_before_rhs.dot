@@ -1,0 +1,12 @@
+digraph {
+    one[label="1" class="value,disabled"]
+    two[label="2" class="value" style="invis"]
+    three[label="3" class="value" style="invis"]
+    add1[label="Add" class="operator,disabled"]
+    add2[label="Add" class="operator" style="invis"]
+
+    add1 -> one[class="disabled"]
+    add1 -> add2
+    add2 -> two[style="invis"]
+    add2 -> three[style="invis"]
+}

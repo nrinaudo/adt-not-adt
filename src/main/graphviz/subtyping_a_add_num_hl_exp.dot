@@ -1,0 +1,11 @@
+digraph {
+    Exp
+    Add[class="disabled"]
+    Num[class="disabled"]
+
+    Exp -> Add[class="disabled"]
+    Exp -> Num[class="disabled"]
+
+    D[style="invis"]
+    Num -> D[style="invis"]
+}

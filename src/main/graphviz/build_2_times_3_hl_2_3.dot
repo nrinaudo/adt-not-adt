@@ -1,0 +1,11 @@
+digraph {
+    two[label="2" class="value"]
+    three[label="3" class="value"]
+    times[label="×" class="operator,disabled"]
+
+    times -> two
+    times -> three
+
+    c[style="invis"]
+    three -> c[style="invis"]
+}
