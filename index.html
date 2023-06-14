@@ -15,425 +15,597 @@ class: center, middle
 
 ---
 
-## Step 1
+class: center, middle
+
+# Abstract Data types
+
+---
+
+## Addition
+
+.center[![](img/1_plus_2.svg)]
 
 ```scala
-abstract class Exp
+1 + 2
+```
 
-class Num(val value: Int) extends Exp
-class Add(val lhs: Exp, val rhs: Exp) extends Exp
+???
+
+The simplest expression we want to support: addition.
+
+---
+
+## Addition
+
+.center[![](img/exp_1_plus_2.svg)]
+
+```scala
+class Add(lhs: Int, rhs: Int)
 
 ```
 
 ---
 
-## Step 2
+## Addition
+
+.center[![](img/exp_1_plus_2.svg)]
 
 ```scala
-abstract class Exp
+Add(1, 2)
+```
 
-class Num(val value: Int) extends Exp
-class Add(val lhs: Exp, val rhs: Exp) extends Exp
-class Bool(val value: Boolean) extends Exp
-class Eq(val lhs: Exp, val rhs: Exp) extends Exp
+---
+
+## Addition
+
+.center[![](img/1_plus_2_plus_3.svg)]
+
+```scala
+1 + 2 + 3
+```
+
+???
+
+We want to be able to chain additions, so we'll need `Add` to take expressions.
+
+---
+
+## Addition
+
+.center[![](img/1_add_2_add_3.svg)]
+
+```scala
+Add(
+  1,
+  Add(2, 3)
+)
+```
+
+---
+
+## Addition
+
+.center[![](img/exp_1_plus_2_plus_3.svg)].center[![](img/1_add_2_add_3.svg)]
+
+```scala
+class Num(value: Int)
+class Add(lhs: Num, rhs: Num)
 
 ```
 
 ---
 
-## Step 3
+## Addition
+
+.center[![](img/exp_1_plus_2_plus_3.svg)]
+
+```scala
+abstract class Exp
+
+class Num(value: Int) extends Exp
+class Add(lhs: Exp, rhs: Exp) extends Exp
+
+```
+
+---
+
+## Addition
+
+.center[![](img/exp_1_plus_2_plus_3.svg)]
+
+```scala
+Add(
+  Num(1),
+  Add(Num(2), Num(3))
+)
+```
+
+---
+
+## Equality
+
+.center[![](img/1_eq_2.svg)]
+
+```scala
+1 = 2
+```
+
+???
+
+Another thing we want to express is the notion of equality. For that, we need the equal operator.
+
+---
+
+## Equality
+
+.center[![](img/exp_1_eq_2.svg)]
+
+```scala
+class Eq(lhs: Exp, rhs: Exp) extends Exp
+
+```
+
+---
+
+## Pretty printing
+
+.center[![](img/1_plus_2_eq_2_plus_1.svg)]
+
+```scala
+1 + 2 = 2 + 1
+```
+
+???
+Now that we know how to do all this, we would like to be able to print things for human readers.
+The default behaviour is pretty dire.
+
+---
+
+## Pretty printing
+
+.center[![](img/exp_1_plus_2_eq_2_plus_1.svg)]
+
+```scala
+Eq(
+  Add(Num(1), Num(2)),
+  Add(Num(2), Num(1))
+).toString
+// val res2: String = Eq@2a9e754e
+```
+
+---
+
+## Pretty printing
 
 ```scala
 abstract class Exp:
-  def print: String
+  def toString: String
 
 ```
 
+???
+
+Interpreters, in an Abstract Data Type context, are abstract methods.
+
 ---
 
-## Step 3
+## Pretty printing
 
 ```scala
-class Num(val value: Int) extends Exp:
-  override def print = value.toString
+class Num(value: Int) extends Exp:
+  override def toString = value.toString
 
-class Add(val lhs: Exp, val rhs: Exp) extends Exp:
-  override def print = s"(${lhs.print} + ${rhs.print})"
+class Add(lhs: Exp, rhs: Exp) extends Exp:
+  override def toString = s"($lhs + $rhs)"
 
-class Bool(val value: Boolean) extends Exp:
-  override def print = value.toString
-
-class Eq(val lhs: Exp, val rhs: Exp) extends Exp:
-  override def print = s"(${lhs.print} == ${rhs.print})"
+class Eq(lhs: Exp, rhs: Exp) extends Exp:
+  override def toString = s"($lhs = $rhs)"
 
 ```
 
 ---
 
-## Step 3
+## Pretty printing
+
+.center[![](img/exp_1_plus_2_eq_2_plus_1.svg)]
 
 ```scala
-Add(Num(1), Eq(Num(2), Bool(false))).print
-// val res0: String = (1 + (2 == false))
+Eq(
+  Add(Num(1), Num(2)),
+  Add(Num(2), Num(1))
+).toString
+// val res3: String = ((1 + 2) = (2 + 1))
 ```
 
 ---
 
-## Step 4
+## Type checking
 
-Did you notice our example? We're adding ints and booleans.
-Let's fix that, by tagging an expression with the type "it will be evaluated as" (normal form).
-
----
-
-## Step 4
+.center[![](img/exp_1_eq_2_plus_2_plus_1.svg)]
 
 ```scala
-abstract class Exp[T]:
-  def print: String
-
+Add(
+  Eq(Num(1), Num(2)),
+  Add(Num(2), Num(1))
+).toString
+// val res4: String = ((1 = 2) + (2 + 1))
 ```
 
----
-
-## Step 4
-
-```scala
-class Num(val value: Int) extends Exp[Int]:
-  override def print = value.toString
-
-class Add(val lhs: Exp[Int], val rhs: Exp[Int])
-    extends Exp[Int]:
-  override def print = s"(${lhs.print} + ${rhs.print})"
-
-class Bool(val value: Boolean) extends Exp[Boolean]:
-  override def print = value.toString
-
-class Eq[T](val lhs: Exp[T], val rhs: Exp[T])
-    extends Exp[Boolean]:
-  override def print = s"(${lhs.print} == ${rhs.print})"
-
-```
+???
+Unfortunately, this is considered valid, even though it makes no sense.
 
 ---
 
-## Step 5
- Now that we've fixed that, we can write an interesting interpreter: evaluation to normal form.
- This is relatively painful, as we have to modify *every implementation*.
- Think about what would happen if this was a public library and other people depended on it, and had added their
- own types?
-
----
-
-## Step 5
+## Type checking
 
 ```scala
 abstract class Exp[T]:
-  def print: String
+  def toString: String
+
+```
+
+???
+
+This is solved by adding a type parameter that represents an `Exp`'s normal form.
+
+---
+
+## Type checking
+
+```scala
+class Num(value: Int) extends Exp[Int]:
+  override def toString = value.toString
+
+class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
+  override def toString = s"($lhs + $rhs)"
+
+class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
+  override def toString = s"($lhs = $rhs)"
+
+```
+
+---
+
+## Type checking
+
+.center[![](img/exp_1_eq_2_plus_2_plus_1.svg)]
+
+```scala
+Add(
+  Eq(Num(1), Num(2)),
+  Add(Num(2), Num(1))
+).toString
+// ⛔ Found:    Exp[Boolean]
+//   Required: Exp[Int]
+```
+
+---
+
+## Key takeaways
+
+Feature              || Abstract Data Types
+---------------------||--------------------
+ Terms               || &nbsp;
+ Interpreters        || &nbsp;
+ Illegal states      || &nbsp;
+
+---
+
+## Key takeaways
+
+Feature              || Abstract Data Types
+---------------------||--------------------
+ Terms               || classes
+ Interpreters        || &nbsp;
+ Illegal states      || &nbsp;
+
+---
+
+## Key takeaways
+
+Feature              || Abstract Data Types
+---------------------||--------------------
+ Terms               || classes
+ Interpreters        || methods
+ Illegal states      || &nbsp;
+
+---
+
+## Key takeaways
+
+Feature              || Abstract Data Types
+---------------------||--------------------
+ Terms               || classes
+ Interpreters        || methods
+ Illegal states      || impossible
+
+---
+
+class: center, middle
+
+# Growing the language
+
+---
+
+## Adding terms: substraction
+
+.center[![](img/2_minus_1.svg)]
+
+```scala
+2 - 1
+```
+
+???
+
+We now want to see how complicated it is to add new terms to our language
+
+---
+
+## Adding terms: substraction
+
+.center[![](img/exp_2_minus_1.svg)]
+
+```scala
+class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
+  override def toString = s"($lhs - $rhs)"
+
+```
+
+---
+
+## Adding terms: substraction
+
+.center[![](img/3_minus_2_plus_1.svg)]
+
+```scala
+3 - (2 + 1)
+```
+
+???
+Interestingly, this works very easily: we can immediately integrate it with the rest of the existing language with no further work.
+
+---
+
+## Adding terms: substraction
+
+.center[![](img/exp_3_minus_2_plus_1.svg)]
+
+```scala
+Sub(
+  Num(3),
+  Add(Num(2), Num(1))
+).toString
+// val res5: String = (3 - (2 + 1))
+```
+
+---
+
+## Adding interpreters: evaluation
+
+.center[![](img/1_plus_2_eq_3_minus_1.svg)]
+
+```scala
+1 + 2 = 3 - 1
+```
+
+???
+
+How about interpreters?
+
+---
+
+## Adding interpreters: evaluation
+
+.center[![](img/exp_1_plus_2_eq_3_minus_1.svg)]
+
+```scala
+Eq(
+  Add(Num(1), Num(2)),
+  Sub(Num(3), Num(1))
+)
+```
+
+---
+
+## Adding interpreters: evaluation
+
+```scala
+abstract class Exp[T]:
+  def toString: String
   def eval: T
 
 ```
 
 ---
 
-## Step 5
+## Adding interpreters: evaluation
 
 ```scala
-class Num(val value: Int) extends Exp[Int]:
-  override def print = value.toString
-  override def eval = value
+class Num(value: Int) extends Exp[Int]:
+  override def toString = value.toString
+  override def eval     = value
 
-class Add(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]:
-  override def print = s"(${lhs.print} + ${rhs.print})"
-  override def eval = lhs.eval + rhs.eval
-
-class Bool(val value: Boolean) extends Exp[Boolean]:
-  override def print = value.toString
-  override def eval = value
-
-class Eq[T](val lhs: Exp[T], val rhs: Exp[T]) extends Exp[Boolean]:
-  override def print = s"(${lhs.print} == ${rhs.print})"
-  override def eval = lhs.eval == rhs.eval
-
-```
-
----
-
-## Step 5
-
-```scala
-Eq(Num(4), Add(Num(1), Num(3))).eval
-// val res1: Boolean = true
-```
-
----
-
-## Step 6
-
-We've seen that adding new interpreters was quite painful. How about new terms?
-Let's add multiplication. This turns out to be easy, as in, local to our new type only, no breaking change
-for anyone.
-
----
-
-## Step 6
-
-```scala
-class Mult(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]:
-  override def print = s"(${lhs.print} * ${rhs.print})"
-  override def eval = lhs.eval * rhs.eval
-
-```
-
----
-
-## Step 6
-
-```scala
-val expr = Eq(Num(4), Mult(Num(1), Num(3)))
-
-expr.print
-// val res2: String = (4 == (1 * 3))
-```
-
-```scala
-expr.eval
-// val res3: Boolean = false
-```
-
----
-
-## Step 7
-
-Just to hammer the point home: let's add a new interpreter, optimisation, which turns comparison of literals
-to the literal value (eg 1 == 1 to true).
-
-Even though we can try to make things easier by providing a no-op default implementation, we still run in tons
-of issues:
-- we need to override it most of the time, for recursive data types. Otherwise we stop optimising at the root of our
-  abstract syntax tree.
-- while the change will be *source* compatible, it won't be *binary* compatible.
-- ...
-
-If we think about this for a while, our problems are linked to tight coupling between data and behaviours, one of the
-core tennets of modern OOP.
-
----
-
-## Step 7
-
-```scala
-abstract class Exp[T]:
-  def print: String
-  def eval: T
-  def optimise: Exp[T] = this
-
-```
-
----
-
-## Step 7
-
-```scala
-class Num(val value: Int) extends Exp[Int]:
-  override def print = value.toString
-  override def eval  = value
-
-```
-
----
-
-## Step 7
-
-```scala
-class Add(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]:
-  override def print    = s"(${lhs.print} + ${rhs.print})"
+class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
+  override def toString = s"($lhs + $rhs)"
   override def eval     = lhs.eval + rhs.eval
-  override def optimise = Add(lhs.optimise, rhs.optimise)
 
-```
+class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
+  override def toString = s"($lhs - $rhs)"
+  override def eval     = lhs.eval - rhs.eval
 
----
-
-## Step 7
-
-```scala
-class Mult(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]:
-  override def print    = s"(${lhs.print} * ${rhs.print})"
-  override def eval     = lhs.eval * rhs.eval
-  override def optimise = Mult(lhs.optimise, rhs.optimise)
-
-```
-
----
-
-## Step 7
-
-```scala
-class Bool(val value: Boolean) extends Exp[Boolean]:
-  override def print = value.toString
-  override def eval  = value
-
-```
-
----
-
-## Step 7
-
-```scala
-class Eq[T](val lhs: Exp[T], val rhs: Exp[T]) extends Exp[Boolean]:
-  override def print    = s"(${lhs.print} == ${rhs.print})"
+class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
+  override def toString = s"($lhs = $rhs)"
   override def eval     = lhs.eval == rhs.eval
 
-  override def optimise = (lhs.optimise, rhs.optimise) match
-    case (li: Num, ri: Num)   => Bool(li.value == ri.value)
-    case (lb: Bool, rb: Bool) => Bool(lb.value == rb.value)
-    case (lother, rother)     => Eq(lother, rother)
-
 ```
+
+???
+
+We have to modify every single implementation, including ones that we didn't write ourselves...
+
+What if we want to add interpreters to types we did not write?
 
 ---
 
-## Step 7
+## Adding interpreters: evaluation
+
+.center[![](img/exp_1_plus_2_eq_3_minus_1.svg)]
 
 ```scala
-val expr = Eq(
-  Eq(Num(3), Num(3)),
-  Eq(Add(Num(1), Num(2)), Num(3))
-)
-
-expr.print
-// val res4: String = ((3 == 3) == ((1 + 2) == 3))
-```
-
-```scala
-expr.optimise.print
-// val res5: String = (true == ((1 + 2) == 3))
+Eq(
+  Add(Num(1), Num(2)),
+  Sub(Num(3), Num(1))
+).eval
+// val res7: Boolean = false
 ```
 
 ---
 
-## Step 8
+## Key takeaways
 
-One relatively intuitive way of addressing this pain point would be to decorelate data types and their interpreters.
-This seems pretty natural, since our problem literally comes from that correlation.
-
-For brevity, we'll only do print for the moment.
+Feature              || Abstract Data Types
+---------------------||--------------------
+ Term                || class
+ Interpreter         || method
+ Illegal states      || impossible
+ Adding terms        || &nbsp;
+ Adding interpreters || &nbsp;
 
 ---
 
-## Step 8
+## Key takeaways
+
+Feature              || Abstract Data Types
+---------------------||--------------------
+ Term                || class
+ Interpreter         || method
+ Illegal states      || impossible
+ Adding terms        || easy
+ Adding interpreters || &nbsp;
+
+
+---
+
+## Key takeaways
+
+Feature              || Abstract Data Types
+---------------------||--------------------
+ Term                || class
+ Interpreter         || method
+ Illegal states      || impossible
+ Adding terms        || easy
+ Adding interpreters || hard
+
+---
+
+class: center, middle
+
+# Algebraic Data Types
+
+---
+
+## "Dumb" data
 
 ```scala
 abstract class Exp[T]
 
 class Num(val value: Int) extends Exp[Int]
 class Add(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]
-class Mult(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]
-class Bool(val value: Boolean) extends Exp[Boolean]
-class Eq[T](val lhs: Exp[T], val rhs: Exp[T]) extends Exp[Boolean]
-
-```
-
----
-
-## Step 8
-
-```scala
-def print[T](expr: Exp[T]): String = expr match
-  case i: Num   => i.value.toString
-  case a: Add   => s"${print(a.lhs)} + ${print(a.rhs)}"
-  case m: Mult  => s"${print(m.lhs)} * ${print(m.rhs)}"
-  case b: Bool  => b.value.toString
-  case e: Eq[T] => s"${print(e.lhs)} == ${print(e.rhs)}"
-// 1 warning found
-//   case e: Eq[T] => s"${print(e.lhs)} == ${print(e.rhs)}"
-//        ^
-// ⚠ the type test for Eq[T] cannot be checked at runtime
-```
-
----
-
-## Step 9
-
-Let's now do eval. Notice how local it is? The decorelation of data and behaviours make adding new behaviours easy.
-
----
-
-## Step 9
-
-```scala
-def eval[T](expr: Exp[T]): T = expr match
-  case i: Num   => i.value
-  case a: Add   => eval(a.lhs) + eval(a.rhs)
-  case m: Mult  => eval(m.lhs) * eval(m.rhs)
-  case b: Bool  => b.value
-  case e: Eq[T] => eval(e.lhs) == eval(e.rhs)
-// 1 warning found
-//   case e: Eq[T] => eval(e.lhs) == eval(e.rhs)
-//        ^
-// ⚠ the type test for Eq[T] cannot be checked at runtime
-```
-
----
-
-## Step 10
-
-We'll now add substraction.
-
-Notice how we forgot to update the pattern matches and everything compiles, but fails at runtime. Not nice.
-
----
-
-## Step 10
-
-```scala
-class Sub(val lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
-
-```
-
----
-
-## Step 11
-This is due to the fact that we're working in an open world: we cannot know all the subtypes of Exp.
-
-Well. We can, if the language supports it (JMOF does not), by flagging Exp as sealed.
-We're now in a closed world, and the compiler forces us to fix our interpreters.
-
----
-
-## Step 11
-
-```scala
-sealed abstract class Exp[T]
-
-class Num(val value: Int) extends Exp[Int]
-class Add(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]
 class Sub(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]
-class Mult(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]
-class Bool(val value: Boolean) extends Exp[Boolean]
-class Eq[T](val lhs: Exp[T], val rhs: Exp[T]) extends Exp[Boolean]
+class Eq(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Boolean]
+
+```
+
+START FROM OOP EXP, REFACTOR
+
+???
+
+`Exp` is now a dumb data type with no logic.
+
+We now need to write our interpreters as functions.
+
+---
+
+## Pretty printing
+
+```scala
+def print[T](exp: Exp[T]): String = exp match
+  case i: Num => i.value.toString
+  case a: Add => s"(${print(a.lhs)} + ${print(a.rhs)})"
+  case m: Sub => s"(${print(m.lhs)} - ${print(m.rhs)})"
+  case e: Eq  => s"(${print(e.lhs)} = ${print(e.rhs)})"
+
+```
+
+???
+
+This is ok, but there's quite a bit of syntactic noise here.
+Some languages, including Scala, have syntactic sugar.
+
+---
+
+## Product types
+
+```scala
+abstract class Exp[T]
+
+case class Num(value: Int) extends Exp[Int]
+case class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+case class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+case class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]
 
 ```
 
 ---
 
-## Step 12
+## Product types
 
+```scala
+def print[T](exp: Exp[T]): String = exp match
+  case Num(i)        => i.toString
+  case Add(lhs, rhs) => s"(${print(lhs)} + ${print(rhs)})"
+  case Sub(lhs, rhs) => s"(${print(lhs)} - ${print(rhs)})"
+  case Eq(lhs, rhs)  => s"(${print(lhs)} = ${print(rhs)})"
 
-The syntax is a little bit unpleasant, let's introduce case classes to have proper pattern matches.
-
-At this point, we've seen everything we wanted:
-- sum types (Exp)
-- product types (all the others)
-- ADTs: potentially recursive (Add) sums of products.
-
-Note that this is not strictly necessary, but it's nice to show that Algebraic Data Types make introspection
- convenient and cheap.
+```
 
 ---
 
-## Step 12
+## Exhaustivity
+
+```scala
+def eval[T](exp: Exp[T]): T = exp match
+  case Num(i)        => i
+  case Add(lhs, rhs) => eval(lhs) + eval(rhs)
+  case Sub(lhs, rhs) => eval(lhs) - eval(rhs)
+
+```
+
+???
+
+Note how I purposefully did not handle the `Eq` case.
+
+---
+
+## Exhaustivity
+
+```scala
+eval(Eq(
+  Num(1),
+  Num(2)
+))
+// scala.MatchError: Eq(Num(1),Num(2)) (of class repl$.rs$line$3$Eq)
+//   at <console>.eval(<console>:4)
+//   ... 36 elided
+```
+
+???
+
+This is accepted by the compiler and triggers runtime errors, which we do not like.
+
+---
+
+## Exhaustivity
 
 ```scala
 sealed abstract class Exp[T]
@@ -441,142 +613,313 @@ sealed abstract class Exp[T]
 case class Num(value: Int) extends Exp[Int]
 case class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
 case class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
-case class Mult(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
-case class Bool(value: Boolean) extends Exp[Boolean]
-case class Eq[T](lhs: Exp[T], rhs: Exp[T]) extends Exp[Boolean]
+case class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]
+
+```
+
+???
+
+This can be fixed by giving guarantees to the compiler that it knows all possible implementations.
+
+---
+
+## Exhaustivity
+
+```scala
+def eval[T](exp: Exp[T]): T = exp match
+  case Num(i)        => i
+  case Add(lhs, rhs) => eval(lhs) + eval(rhs)
+  case Sub(lhs, rhs) => eval(lhs) - eval(rhs)
+// def eval[T](exp: Exp[T]): T = exp match
+//                               ^
+// ⛔ match may not be exhaustive.
+//   
+//   It would fail on pattern case: Eq(_, _)
+// 1 error found
+```
+
+???
+
+This now fails to compile!
+
+---
+
+## ADTs
+
+```scala
+enum Exp[T]:
+  case Num(value: Int) extends Exp[Int]
+  case Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+  case Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+  case Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]
+
+```
+
+???
+
+Scala has syntax for this exact, enums, which are really sums of products.
+It's a subset of Algebraic Data Types.
+
+---
+
+## Key takeaways
+
+Feature              || Abstract Data Types | Algebraic Data Types
+---------------------||---------------------|---------------------
+ Term                || class               | &nbsp;
+ Interpreter         || method              | &nbsp;
+ Illegal states      || impossible          | &nbsp;
+ Adding terms        || easy                | &nbsp;
+ Adding interpreters || hard                | &nbsp;
+
+---
+
+## Key takeaways
+
+Feature              || Abstract Data Types | Algebraic Data Types
+---------------------||---------------------|---------------------
+ Term                || class               | data type
+ Interpreter         || method              | &nbsp;
+ Illegal states      || impossible          | &nbsp;
+ Adding terms        || easy                | &nbsp;
+ Adding interpreters || hard                | &nbsp;
+
+---
+
+## Key takeaways
+
+Feature              || Abstract Data Types | Algebraic Data Types
+---------------------||---------------------|---------------------
+ Term                || class               | data type
+ Interpreter         || method              | function
+ Illegal states      || impossible          | &nbsp;
+ Adding terms        || easy                | &nbsp;
+ Adding interpreters || hard                | &nbsp;
+
+
+---
+
+## Key takeaways
+
+
+Feature              || Abstract Data Types | Algebraic Data Types
+---------------------||---------------------|---------------------
+ Term                || class               | data type
+ Interpreter         || method              | function
+ Illegal states      || impossible          | impossible
+ Adding terms        || easy                | &nbsp;
+ Adding interpreters || hard                | &nbsp;
+
+---
+
+class: center, middle
+
+# Growing the language, again
+
+---
+
+## Adding terms: multiplication
+
+.center[![](img/2_times_3.svg)]
+
+```scala
+2 * 3
+```
+
+---
+
+## Adding terms: multiplication
+
+```scala
+enum Exp[T]:
+  case Num(value: Int) extends Exp[Int]
+  case Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+  case Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+  case Mult(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
+  case Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]
 
 ```
 
 ---
 
-## Step 12
+## Adding terms: multiplication
 
 ```scala
-def print[T](expr: Exp[T]): String = expr match
-  case Num(value)     => value.toString
-  case Add(lhs, rhs)  => s"${print(lhs)} + ${print(rhs)}"
-  case Sub(lhs, rhs)  => s"${print(lhs)} - ${print(rhs)}"
-  case Mult(lhs, rhs) => s"${print(lhs)} * ${print(rhs)}"
-  case Bool(value)    => value.toString
-  case Eq(lhs, rhs)   => s"${print(lhs)} == ${print(rhs)}"
+def print[T](exp: Exp[T]): String = exp match
+  case Num(i)         => i.toString
+  case Add(lhs, rhs)  => s"(${print(lhs)} + ${print(rhs)})"
+  case Sub(lhs, rhs)  => s"(${print(lhs)} - ${print(rhs)})"
+  case Eq(lhs, rhs)   => s"(${print(lhs)} = ${print(rhs)})"
+// def print[T](exp: Exp[T]): String = exp match
+//                                     ^
+// ⛔ match may not be exhaustive.
+//   
+//   It would fail on pattern case: Exp.Mult(_, _)
+// 1 error found
+```
+
+---
+
+## Adding terms: multiplication
+
+```scala
+def print[T](exp: Exp[T]): String = exp match
+  case Num(i)         => i.toString
+  case Add(lhs, rhs)  => s"(${print(lhs)} + ${print(rhs)})"
+  case Sub(lhs, rhs)  => s"(${print(lhs)} - ${print(rhs)})"
+  case Mult(lhs, rhs) => s"(${print(lhs)} * ${print(rhs)})"
+  case Eq(lhs, rhs)   => s"(${print(lhs)} = ${print(rhs)})"
 
 ```
 
 ---
 
-## Step 12
+## Adding terms: multiplication
 
 ```scala
-def eval[T](expr: Exp[T]): T = expr match
-  case Num(value)     => value
+def eval[T](exp: Exp[T]): T = exp match
+  case Num(i)         => i
   case Add(lhs, rhs)  => eval(lhs) + eval(rhs)
   case Sub(lhs, rhs)  => eval(lhs) - eval(rhs)
   case Mult(lhs, rhs) => eval(lhs) * eval(rhs)
-  case Bool(value)    => value
   case Eq(lhs, rhs)   => eval(lhs) == eval(rhs)
 
 ```
 
 ---
 
-## Step 13
-So, new interpreters are very easy. How about new terms?
-Let's add boolean And.
-This is a bit of a nightmare, as we have to update every single interpreter. It's *very* symmetrical to the problem we had with subclassing.
+## Adding terms: multiplication
 
----
-
-## Step 13
+.center[![](img/exp_2_times_3.svg)]
 
 ```scala
-sealed abstract class Exp[T]
-
-case class Num(value: Int) extends Exp[Int]
-case class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
-case class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
-case class Mult(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
-case class Bool(value: Boolean) extends Exp[Boolean]
-case class And(lhs: Exp[Boolean], rhs: Exp[Boolean]) extends Exp[Boolean]
-case class Eq[T](lhs: Exp[T], rhs: Exp[T]) extends Exp[Boolean]
-
-```
-
----
-## Step 13
-
-```scala
-def print[T](expr: Exp[T]): String = expr match
-  case Num(value)     => value.toString
-  case Add(lhs, rhs)  => s"${print(lhs)} + ${print(rhs)}"
-  case Sub(lhs, rhs)  => s"${print(lhs)} - ${print(rhs)}"
-  case Mult(lhs, rhs) => s"${print(lhs)} * ${print(rhs)}"
-  case Bool(value)    => value.toString
-  case Eq(lhs, rhs)   => s"${print(lhs)} == ${print(rhs)}"
-  case And(lhs, rhs)  => s"${print(lhs)} && ${print(rhs)}"
-
+print(Mult(
+  Num(2),
+  Num(3)
+))
+// val res1: String = (2 * 3)
 ```
 
 ---
 
-## Step 13
+## Adding terms: multiplication
+
+.center[![](img/exp_2_times_3.svg)]
 
 ```scala
-def eval[T](expr: Exp[T]): T = expr match
-  case Num(value)     => value
-  case Add(lhs, rhs)  => eval(lhs) + eval(rhs)
-  case Sub(lhs, rhs)  => eval(lhs) - eval(rhs)
-  case Mult(lhs, rhs) => eval(lhs) * eval(rhs)
-  case Bool(value)    => value
-  case Eq(lhs, rhs)   => eval(lhs) == eval(rhs)
-  case And(lhs, rhs)  => eval(lhs) && eval(rhs)
-
+eval(Mult(
+  Num(2),
+  Num(3)
+))
+// val res2: Int = 6
 ```
 
 ---
 
-## Step 14
+## Adding interpreters: rewriting
 
-Just for fun, let's implement optimise. This is mostly to show that with proper pattern matches, it's a little bit nicer.
+.center[![](img/3_minus_neg_1.svg)]
+
+```scala
+3 - (-1)
+```
+
 
 ---
 
-## Step 14
+## Adding interpreters: rewriting
+
+.center[![](img/exp_3_minus_neg_1.svg)]
 
 ```scala
-def optimize[T](expr: Exp[T]): Exp[T] = expr match
-  case lit: Num       => lit
-  case Add(lhs, rhs)  => Add(optimize(lhs), optimize(rhs))
-  case Sub(lhs, rhs)  => Sub(optimize(lhs), optimize(rhs))
-  case Mult(lhs, rhs) => Mult(optimize(lhs), optimize(rhs))
-  case bool: Bool     => bool
-  case And(lhs, rhs)  => And(optimize(lhs), optimize(rhs))
-  case Eq(lhs, rhs) =>
-    (optimize(lhs), optimize(rhs)) match
-      case (Num(l), Num(r))   => Bool(l == r)
-      case (Bool(l), Bool(r)) => Bool(l == r)
-      case (l, r)             => Eq(l, r)
+print(Sub(
+  Num(3),
+  Num(-1)
+))
+// val res3: String = (3 - -1)
+```
+
+---
+
+## Adding interpreters: rewriting
+
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case num: Num         => num
+  case Add(lhs, rhs)    => Add(opt(lhs), opt(rhs))
+  case Mult(lhs, rhs)   => Mult(opt(lhs), opt(rhs))
+  case Eq(lhs, rhs)     => Eq(opt(lhs), opt(rhs))
+  case Sub(lhs, Num(i)) => if i < 0 then Add(opt(lhs), Num(-i))
+                           else          Sub(opt(lhs), Num(i))
+  case Sub(lhs, rhs)    => Sub(opt(lhs), opt(rhs))
 
 ```
 
 ---
 
-## Conclusion
+## Adding interpreters: rewriting
 
-We've seen that picking one approach over the other is a matter of what you want to optimize for:
-- Subclassing: adding new terms is easy, adding new interpreters is hard.
-- Algebraic Data Types: adding new terms is hard, adding new interpreters is easy.
+.center[![](img/exp_3_minus_neg_1.svg)]
 
-This is known as the Expession Problem. There are various solutions to it:
-- Object Algebras for OOP (https://i.cs.hku.hk/~bruno/papers/oopsla2015.pdf)
-- Tagless Final for languages with type classes and ADTS (https://okmij.org/ftp/tagless-final/course/lecture.pdf)
-- ...
+```scala
+print(Sub(
+  Num(3),
+  Num(-1)
+))
+// val res4: String = (3 - -1)
+```
 
-It is, of course, not limited to writing programming languages. This is just a specific example of data modelling
-in general, where you can decide to couple data and behaviours, or to decouple them, and need to be aware of the
-corresponding tradeoffs.
+---
 
-In general, I prefer to optimise for new interpreters: I tend to model my data types once and rarely modify them,
-but on the other hand, I do write quite a few functions that consume them...
+## Adding interpreters: rewriting
+
+.center[![](img/exp_3_plus_1.svg)]
+
+```scala
+print(opt(Sub(
+  Num(3),
+  Num(-1)
+)))
+// val res5: String = (3 + 1)
+```
+
+---
+
+## Key takeaways
+
+Feature              || Abstract Data Types | Algebraic Data Types
+---------------------||---------------------|---------------------
+ Term                || class               | data type
+ Interpreter         || method              | function
+ Illegal states      || impossible          | impossible
+ Adding terms        || easy                | &nbsp;
+ Adding interpreters || hard                | &nbsp;
+
+
+---
+
+## Key takeaways
+
+Feature              || Abstract Data Types | Algebraic Data Types
+---------------------||---------------------|---------------------
+ Term                || class               | data type
+ Interpreter         || method              | function
+ Illegal states      || impossible          | impossible
+ Adding terms        || easy                | hard
+ Adding interpreters || hard                | &nbsp;
+
+
+---
+
+## Key takeaways
+
+Feature              || Abstract Data Types | Algebraic Data Types
+---------------------||---------------------|---------------------
+ Term                || class               | data type
+ Interpreter         || method              | function
+ Illegal states      || impossible          | impossible
+ Adding terms        || easy                | hard
+ Adding interpreters || hard                | easy
 
 ---
 class: center, middle
