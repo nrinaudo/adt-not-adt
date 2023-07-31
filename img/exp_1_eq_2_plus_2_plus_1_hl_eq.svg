@@ -20,69 +20,69 @@
 <path fill="#ffffff" stroke="#d0dce3" d="M130,-36C130,-36 92,-36 92,-36 86,-36 80,-30 80,-24 80,-24 80,-12 80,-12 80,-6 86,0 92,0 92,0 130,0 130,0 136,0 142,-6 142,-12 142,-12 142,-24 142,-24 142,-30 136,-36 130,-36"/>
 <text text-anchor="middle" x="111" y="-14.3" font-family="Inter,Arial" font-size="14.00" fill="#d0dce3">Num(2)</text>
 </g>
-<!-- add1 -->
-<g id="node3" class="node operator,disabled">
-<title>add1</title>
-<path fill="#d0dce3" stroke="#d0dce3" d="M126,-108C126,-108 96,-108 96,-108 90,-108 84,-102 84,-96 84,-96 84,-84 84,-84 84,-78 90,-72 96,-72 96,-72 126,-72 126,-72 132,-72 138,-78 138,-84 138,-84 138,-96 138,-96 138,-102 132,-108 126,-108"/>
-<text text-anchor="middle" x="111" y="-86.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">Add</text>
+<!-- eq -->
+<g id="node3" class="node operator">
+<title>eq</title>
+<path fill="#586e75" stroke="#586e75" d="M126,-108C126,-108 96,-108 96,-108 90,-108 84,-102 84,-96 84,-96 84,-84 84,-84 84,-78 90,-72 96,-72 96,-72 126,-72 126,-72 132,-72 138,-78 138,-84 138,-84 138,-96 138,-96 138,-102 132,-108 126,-108"/>
+<text text-anchor="middle" x="111" y="-86.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">Eq</text>
 </g>
-<!-- add1&#45;&gt;one1 -->
+<!-- eq&#45;&gt;one1 -->
 <g id="edge1" class="edge disabled">
-<title>add1&#45;&gt;one1</title>
+<title>eq&#45;&gt;one1</title>
 <path fill="none" stroke="#d0dce3" d="M91.22,-71.7C81.25,-62.97 68.99,-52.24 58.14,-42.75"/>
 <polygon fill="#d0dce3" stroke="#d0dce3" points="60.38,-40.06 50.55,-36.1 55.77,-45.32 60.38,-40.06"/>
 </g>
-<!-- add1&#45;&gt;two1 -->
+<!-- eq&#45;&gt;two1 -->
 <g id="edge2" class="edge disabled">
-<title>add1&#45;&gt;two1</title>
+<title>eq&#45;&gt;two1</title>
 <path fill="none" stroke="#d0dce3" d="M111,-71.7C111,-63.98 111,-54.71 111,-46.11"/>
 <polygon fill="#d0dce3" stroke="#d0dce3" points="114.5,-46.1 111,-36.1 107.5,-46.1 114.5,-46.1"/>
 </g>
 <!-- two2 -->
-<g id="node4" class="node value">
+<g id="node4" class="node value,disabled">
 <title>two2</title>
-<path fill="#ffffff" stroke="#586e75" d="M210,-36C210,-36 172,-36 172,-36 166,-36 160,-30 160,-24 160,-24 160,-12 160,-12 160,-6 166,0 172,0 172,0 210,0 210,0 216,0 222,-6 222,-12 222,-12 222,-24 222,-24 222,-30 216,-36 210,-36"/>
-<text text-anchor="middle" x="191" y="-14.3" font-family="Inter,Arial" font-size="14.00" fill="#586e75">Num(2)</text>
+<path fill="#ffffff" stroke="#d0dce3" d="M210,-36C210,-36 172,-36 172,-36 166,-36 160,-30 160,-24 160,-24 160,-12 160,-12 160,-6 166,0 172,0 172,0 210,0 210,0 216,0 222,-6 222,-12 222,-12 222,-24 222,-24 222,-30 216,-36 210,-36"/>
+<text text-anchor="middle" x="191" y="-14.3" font-family="Inter,Arial" font-size="14.00" fill="#d0dce3">Num(2)</text>
 </g>
 <!-- one2 -->
-<g id="node5" class="node value">
+<g id="node5" class="node value,disabled">
 <title>one2</title>
-<path fill="#ffffff" stroke="#586e75" d="M290,-36C290,-36 252,-36 252,-36 246,-36 240,-30 240,-24 240,-24 240,-12 240,-12 240,-6 246,0 252,0 252,0 290,0 290,0 296,0 302,-6 302,-12 302,-12 302,-24 302,-24 302,-30 296,-36 290,-36"/>
-<text text-anchor="middle" x="271" y="-14.3" font-family="Inter,Arial" font-size="14.00" fill="#586e75">Num(1)</text>
+<path fill="#ffffff" stroke="#d0dce3" d="M290,-36C290,-36 252,-36 252,-36 246,-36 240,-30 240,-24 240,-24 240,-12 240,-12 240,-6 246,0 252,0 252,0 290,0 290,0 296,0 302,-6 302,-12 302,-12 302,-24 302,-24 302,-30 296,-36 290,-36"/>
+<text text-anchor="middle" x="271" y="-14.3" font-family="Inter,Arial" font-size="14.00" fill="#d0dce3">Num(1)</text>
 </g>
 <!-- add2 -->
-<g id="node6" class="node operator">
+<g id="node6" class="node operator,disabled">
 <title>add2</title>
-<path fill="#586e75" stroke="#586e75" d="M206,-108C206,-108 176,-108 176,-108 170,-108 164,-102 164,-96 164,-96 164,-84 164,-84 164,-78 170,-72 176,-72 176,-72 206,-72 206,-72 212,-72 218,-78 218,-84 218,-84 218,-96 218,-96 218,-102 212,-108 206,-108"/>
+<path fill="#d0dce3" stroke="#d0dce3" d="M206,-108C206,-108 176,-108 176,-108 170,-108 164,-102 164,-96 164,-96 164,-84 164,-84 164,-78 170,-72 176,-72 176,-72 206,-72 206,-72 212,-72 218,-78 218,-84 218,-84 218,-96 218,-96 218,-102 212,-108 206,-108"/>
 <text text-anchor="middle" x="191" y="-86.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">Add</text>
 </g>
 <!-- add2&#45;&gt;two2 -->
-<g id="edge3" class="edge">
+<g id="edge3" class="edge disabled">
 <title>add2&#45;&gt;two2</title>
-<path fill="none" stroke="#586e75" d="M191,-71.7C191,-63.98 191,-54.71 191,-46.11"/>
-<polygon fill="#586e75" stroke="#586e75" points="194.5,-46.1 191,-36.1 187.5,-46.1 194.5,-46.1"/>
+<path fill="none" stroke="#d0dce3" d="M191,-71.7C191,-63.98 191,-54.71 191,-46.11"/>
+<polygon fill="#d0dce3" stroke="#d0dce3" points="194.5,-46.1 191,-36.1 187.5,-46.1 194.5,-46.1"/>
 </g>
 <!-- add2&#45;&gt;one2 -->
-<g id="edge4" class="edge">
+<g id="edge4" class="edge disabled">
 <title>add2&#45;&gt;one2</title>
-<path fill="none" stroke="#586e75" d="M210.78,-71.7C220.75,-62.97 233.01,-52.24 243.86,-42.75"/>
-<polygon fill="#586e75" stroke="#586e75" points="246.23,-45.32 251.45,-36.1 241.62,-40.06 246.23,-45.32"/>
+<path fill="none" stroke="#d0dce3" d="M210.78,-71.7C220.75,-62.97 233.01,-52.24 243.86,-42.75"/>
+<polygon fill="#d0dce3" stroke="#d0dce3" points="246.23,-45.32 251.45,-36.1 241.62,-40.06 246.23,-45.32"/>
 </g>
-<!-- eq -->
+<!-- add1 -->
 <g id="node7" class="node operator,disabled">
-<title>eq</title>
+<title>add1</title>
 <path fill="#d0dce3" stroke="#d0dce3" d="M166,-180C166,-180 136,-180 136,-180 130,-180 124,-174 124,-168 124,-168 124,-156 124,-156 124,-150 130,-144 136,-144 136,-144 166,-144 166,-144 172,-144 178,-150 178,-156 178,-156 178,-168 178,-168 178,-174 172,-180 166,-180"/>
-<text text-anchor="middle" x="151" y="-158.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">Eq</text>
+<text text-anchor="middle" x="151" y="-158.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">Add</text>
 </g>
-<!-- eq&#45;&gt;add1 -->
+<!-- add1&#45;&gt;eq -->
 <g id="edge5" class="edge disabled">
-<title>eq&#45;&gt;add1</title>
+<title>add1&#45;&gt;eq</title>
 <path fill="none" stroke="#d0dce3" d="M141.11,-143.7C136.51,-135.64 130.94,-125.89 125.85,-116.98"/>
 <polygon fill="#d0dce3" stroke="#d0dce3" points="128.77,-115.05 120.77,-108.1 122.7,-118.52 128.77,-115.05"/>
 </g>
-<!-- eq&#45;&gt;add2 -->
+<!-- add1&#45;&gt;add2 -->
 <g id="edge6" class="edge disabled">
-<title>eq&#45;&gt;add2</title>
+<title>add1&#45;&gt;add2</title>
 <path fill="none" stroke="#d0dce3" d="M160.89,-143.7C165.49,-135.64 171.06,-125.89 176.15,-116.98"/>
 <polygon fill="#d0dce3" stroke="#d0dce3" points="179.3,-118.52 181.23,-108.1 173.23,-115.05 179.3,-118.52"/>
 </g>

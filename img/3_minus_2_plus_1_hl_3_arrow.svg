@@ -9,11 +9,6 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
 <title>%3</title>
 <!-- three -->
-<g id="node1" class="node value">
-<title>three</title>
-<path fill="#ffffff" stroke="#586e75" d="M50,-108C50,-108 12,-108 12,-108 6,-108 0,-102 0,-96 0,-96 0,-84 0,-84 0,-78 6,-72 12,-72 12,-72 50,-72 50,-72 56,-72 62,-78 62,-84 62,-84 62,-96 62,-96 62,-102 56,-108 50,-108"/>
-<text text-anchor="middle" x="31" y="-86.3" font-family="Inter,Arial" font-size="14.00" fill="#586e75">Num(3)</text>
-</g>
 <!-- two -->
 <!-- one -->
 <!-- sub -->
@@ -23,10 +18,10 @@
 <text text-anchor="middle" x="69" y="-158.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">Sub</text>
 </g>
 <!-- sub&#45;&gt;three -->
-<g id="edge1" class="edge disabled">
+<g id="edge1" class="edge">
 <title>sub&#45;&gt;three</title>
-<path fill="none" stroke="#d0dce3" d="M59.61,-143.7C55.24,-135.64 49.94,-125.89 45.1,-116.98"/>
-<polygon fill="#d0dce3" stroke="#d0dce3" points="48.13,-115.22 40.29,-108.1 41.98,-118.56 48.13,-115.22"/>
+<path fill="none" stroke="#586e75" d="M59.61,-143.7C55.24,-135.64 49.94,-125.89 45.1,-116.98"/>
+<polygon fill="#586e75" stroke="#586e75" points="48.13,-115.22 40.29,-108.1 41.98,-118.56 48.13,-115.22"/>
 </g>
 <!-- add -->
 <!-- sub&#45;&gt;add -->

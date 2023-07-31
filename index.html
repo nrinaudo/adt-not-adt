@@ -1,7 +1,7 @@
 <!Doctype html>
 <html>
     <head>
-        <title>When is an ADT not an ADT?</title>
+        <title>Introduction to data modeling</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
     </head>
@@ -9,7 +9,7 @@
         <textarea id="source">
 class: center, middle
 
-# When is an ADT not an ADT?
+# Introduction to data modeling
 
 [Nicolas Rinaudo] • [@NicolasRinaudo@functional.cafe]
 
@@ -17,7 +17,7 @@ class: center, middle
 
 class: center, middle
 
-# Abstract Data types
+# A simple DSL
 
 ---
 
@@ -51,16 +51,6 @@ The simplest expression we want to support: addition.
 
 ```scala
 &#x200B;`1` + `2`
-```
-
----
-
-## Addition
-
-.center[![](img/1_plus_2.svg)]
-
-```scala
-1 + 2
 ```
 
 ---
@@ -158,12 +148,6 @@ class Add(lhs: Int, rhs: Int)
 ```scala
 1 + `2 + 3`
 ```
-
----
-
-## Addition
-
-.center[![](img/1_plus_2_plus_3.svg)]
 
 ---
 
@@ -447,20 +431,6 @@ class Num(value: Int) extends Exp
 
 ---
 
-## Addition
-
-.center[![](img/exp_1_plus_2_plus_3.svg)]
-
-```scala
-class Exp
-class Add(lhs: Exp, rhs: Exp) extends Exp
-class Num(value: Int) extends Exp
-
-Add(Num(1), Add(Num(2), Num(3)))
-```
-
----
-
 ## Equality
 
 .center[![](img/1_eq_2_empty.svg)]
@@ -489,16 +459,6 @@ Add(Num(1), Add(Num(2), Num(3)))
 
 ```scala
 &#x200B;`1` = `2`
-```
-
----
-
-## Equality
-
-.center[![](img/1_eq_2.svg)]
-
-```scala
-1 = 2
 ```
 
 ---
@@ -578,7 +538,7 @@ class Eq(lhs: Exp)
 
 ---
 
-## Pretty printing
+## Equality
 
 .center[![](img/1_plus_2_eq_2_plus_1_empty.svg)]
 
@@ -588,45 +548,13 @@ class Eq(lhs: Exp)
 
 ---
 
-## Pretty printing
+## Equality
 
 .center[![](img/1_plus_2_eq_2_plus_1_hl_eq.svg)]
 
 ```scala
 1 + 2 `=` 2 + 1
 ```
-
----
-
-## Pretty printing
-
-.center[![](img/1_plus_2_eq_2_plus_1_hl_lhs.svg)]
-
-```scala
-&#x200B;`1 + 2` = 2 + 1
-```
-
----
-
-## Pretty printing
-
-.center[![](img/1_plus_2_eq_2_plus_1_hl_rhs.svg)]
-
-```scala
-1 + 2 = `2 + 1`
-```
-
----
-
-## Pretty printing
-
-.center[![](img/exp_1_plus_2_eq_2_plus_1_hl_plus.svg)]
-
----
-
-## Pretty printing
-
-.center[![](img/exp_1_plus_2_eq_2_plus_1_hl_eq.svg)]
 
 .diff-add[
 ```scala
@@ -639,9 +567,13 @@ class Eq(lhs: Exp)
 
 ---
 
-## Pretty printing
+## Equality
 
-.center[![](img/exp_1_plus_2_eq_2_plus_1_hl_lhs_rm.svg)]
+.center[![](img/1_plus_2_eq_2_plus_1_hl_eq_arrow.svg)]
+
+```scala
+&#x200B;`1 + 2` = 2 + 1
+```
 
 .diff-rm[
 ```scala
@@ -652,11 +584,17 @@ Eq(
 ```
 ]
 
+
+
 ---
 
-## Pretty printing
+## Equality
 
-.center[![](img/exp_1_plus_2_eq_2_plus_1_hl_lhs_add.svg)]
+.center[![](img/1_plus_2_eq_2_plus_1_hl_lhs.svg)]
+
+```scala
+&#x200B;`1 + 2` = 2 + 1
+```
 
 .diff-add[
 ```scala
@@ -669,9 +607,13 @@ Eq(
 
 ---
 
-## Pretty printing
+## Equality
 
-.center[![](img/exp_1_plus_2_eq_2_plus_1_hl_rhs_rm.svg)]
+.center[![](img/1_plus_2_eq_2_plus_1_hl_rhs_arrow.svg)]
+
+```scala
+1 + 2 = `2 + 1`
+```
 
 .diff-rm[
 ```scala
@@ -684,9 +626,13 @@ Eq(
 
 ---
 
-## Pretty printing
+## Equality
 
-.center[![](img/exp_1_plus_2_eq_2_plus_1_hl_rhs_add.svg)]
+.center[![](img/1_plus_2_eq_2_plus_1_hl_rhs.svg)]
+
+```scala
+1 + 2 = `2 + 1`
+```
 
 .diff-add[
 ```scala
@@ -696,6 +642,19 @@ Eq(
 )
 ```
 ]
+
+---
+
+## Pretty printing
+
+.center[![](img/exp_1_plus_2_eq_2_plus_1.svg)]
+
+```scala
+Eq(
+  Add(Num(1), Num(2)),
+  Add(Num(2), Num(1))
+)
+```
 
 ---
 
@@ -1177,7 +1136,7 @@ Add(
 
 ## Type checking
 
-.center[![](img/exp_1_eq_2_plus_2_plus_1.svg)]
+.center[![](img/exp_1_eq_2_plus_2_plus_1_hl_eq.svg)]
 
 ```scala
 Add(
@@ -1192,37 +1151,37 @@ Add(
 
 ## Key takeaways
 
-Feature              || Abstract Data Types
+Feature              || OOP
 ---------------------||--------------------
  Terms               || &nbsp;
  Interpreters        || &nbsp;
- Illegal states      || &nbsp;
+ Illegal states      || .hidden[impossible]
 
 ---
 
 ## Key takeaways
 
-Feature              || Abstract Data Types
+Feature              || OOP
 ---------------------||--------------------
  Terms               || classes
  Interpreters        || &nbsp;
- Illegal states      || &nbsp;
+ Illegal states      || .hidden[impossible]
 
 ---
 
 ## Key takeaways
 
-Feature              || Abstract Data Types
+Feature              || OOP
 ---------------------||--------------------
  Terms               || classes
  Interpreters        || methods
- Illegal states      || &nbsp;
+ Illegal states      || .hidden[impossible]
 
 ---
 
 ## Key takeaways
 
-Feature              || Abstract Data Types
+Feature              || OOP
 ---------------------||--------------------
  Terms               || classes
  Interpreters        || methods
@@ -1264,17 +1223,6 @@ class: center, middle
 &#x200B;`2` - `1`
 ```
 
-
----
-
-## Adding terms: substraction
-
-.center[![](img/2_minus_1.svg)]
-
-```scala
-2 - 1
-```
-
 ---
 
 ## Adding terms: substraction
@@ -1311,7 +1259,7 @@ class Sub()
 
 .diff-add[
 ```scala
-*class Sub(`lhs: Exp`)
+*class Sub(`lhs: Exp[Int]`)
 ```
 ]
 
@@ -1322,7 +1270,7 @@ class Sub()
 .center[![](img/build_2_minus_1_hl_2.svg)]
 
 ```scala
-class Sub(lhs: Exp)
+class Sub(lhs: Exp[Int])
 ```
 
 ---
@@ -1333,7 +1281,7 @@ class Sub(lhs: Exp)
 
 .diff-add[
 ```scala
-*class Sub(lhs: Exp`, rhs: Exp`)
+*class Sub(lhs: Exp[Int]`, rhs: Exp[Int]`)
 ```
 ]
 
@@ -1382,38 +1330,6 @@ class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
 3 `-` (2 + 1)
 ```
 
----
-
-## Adding terms: substraction
-
-.center[![](img/3_minus_2_plus_1_hl_3.svg)]
-
-```scala
-&#x200B;`3` - (2 + 1)
-```
-
----
-
-## Adding terms: substraction
-
-.center[![](img/3_minus_2_plus_1_hl_rhs.svg)]
-
-```scala
-3 - `(2 + 1)`
-```
-
----
-
-## Adding terms: substraction
-
-.center[![](img/build_3_minus_2_plus_1_hl_minus.svg)]
-
----
-
-## Adding terms: substraction
-
-.center[![](img/build_3_minus_2_plus_1_hl_sub.svg)]
-
 .diff-add[
 ```scala
 *&#x200B;`Sub(`
@@ -1427,7 +1343,11 @@ class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
 
 ## Adding terms: substraction
 
-.center[![](img/build_exp_3_minus_2_plus_1_hl_3.svg)]
+.center[![](img/3_minus_2_plus_1_hl_3_arrow.svg)]
+
+```scala
+&#x200B;`3` - (2 + 1)
+```
 
 .diff-rm[
 ```scala
@@ -1442,7 +1362,11 @@ Sub(
 
 ## Adding terms: substraction
 
-.center[![](img/build_exp_3_minus_2_plus_1_hl_num3.svg)]
+.center[![](img/3_minus_2_plus_1_hl_3.svg)]
+
+```scala
+&#x200B;`3` - (2 + 1)
+```
 
 .diff-add[
 ```scala
@@ -1457,7 +1381,11 @@ Sub(
 
 ## Adding terms: substraction
 
-.center[![](img/build_exp_3_minus_2_plus_1_hl_2_plus_1.svg)]
+.center[![](img/3_minus_2_plus_1_hl_rhs_arrow.svg)]
+
+```scala
+3 - `(2 + 1)`
+```
 
 .diff-rm[
 ```scala
@@ -1468,11 +1396,16 @@ Sub(
 ```
 ]
 
+
 ---
 
 ## Adding terms: substraction
 
-.center[![](img/build_exp_3_minus_2_plus_1_hl_num2_add_num1.svg)]
+.center[![](img/3_minus_2_plus_1_hl_rhs.svg)]
+
+```scala
+3 - `(2 + 1)`
+```
 
 .diff-add[
 ```scala
@@ -1482,6 +1415,19 @@ Sub(
 )
 ```
 ]
+
+---
+
+## Adding terms: substraction
+
+.center[![](img/exp_3_minus_2_plus_1.svg)]
+
+```scala
+Sub(
+  Num(3),
+  Add(Num(2), Num(1))
+)
+```
 
 ---
 
@@ -1511,128 +1457,6 @@ Sub(
 ).toString
 // val res5: String = (3 - (2 + 1))
 ```
-
----
-
-## Adding interpreters: evaluation
-
-.center[![](img/1_plus_2_eq_3_minus_1_empty.svg)]
-
-```scala
-1 + 2 = 3 - 1
-```
-
----
-
-## Adding interpreters: evaluation
-
-.center[![](img/1_plus_2_eq_3_minus_1_hl_eq.svg)]
-
-```scala
-1 + 2 `=` 3 - 1
-```
-
----
-
-## Adding interpreters: evaluation
-
-.center[![](img/1_plus_2_eq_3_minus_1_hl_lhs.svg)]
-
-```scala
-&#x200B;`1 + 2` = 3 - 1
-```
-
----
-
-## Adding interpreters: evaluation
-
-.center[![](img/1_plus_2_eq_3_minus_1_hl_rhs.svg)]
-
-```scala
-1 + 2 = `3 - 1`
-```
-
----
-
-## Adding interpreters: evaluation
-
-.center[![](img/build_1_plus_2_eq_3_minus_1_hl_equal.svg)]
-
-
----
-
-## Adding interpreters: evaluation
-
-.center[![](img/build_1_plus_2_eq_3_minus_1_hl_eq.svg)]
-
-.diff-add[
-```scala
-*&#x200B;`Eq(`
-* `???,`
-* `???`
-*&#x200B;`)`
-```
-]
-
----
-
-## Adding interpreters: evaluation
-
-.center[![](img/build_1_plus_2_eq_3_minus_1_hl_1_plus_2.svg)]
-
-.diff-rm[
-```scala
-Eq(
-* `???`,
-  ???
-)
-```
-]
-
----
-
-## Adding interpreters: evaluation
-
-.center[![](img/build_1_plus_2_eq_3_minus_1_hl_1_add_2.svg)]
-
-.diff-add[
-```scala
-Eq(
-* `Add(Num(1), Num(2)),`
-  ???
-)
-```
-]
-
----
-
-## Adding interpreters: evaluation
-
-.center[![](img/build_1_plus_2_eq_3_minus_1_hl_3_minus_1.svg)]
-
-.diff-rm[
-```scala
-Eq(
-  Add(Num(1), Num(2)),
-* `???`
-)
-```
-]
-
----
-
-## Adding interpreters: evaluation
-
-.center[![](img/build_1_plus_2_eq_3_minus_1_hl_3_sub_1.svg)]
-
-.diff-add[
-```scala
-Eq(
-  Add(Num(1), Num(2)),
-* `Sub(Num(3), Num(1))`
-)
-```
-]
 
 ---
 
@@ -1668,9 +1492,6 @@ class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
 
 class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
   override def toString = s"($lhs - $rhs)"
-
-class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
-  override def toString = s"($lhs = $rhs)"
 ```
 
 ---
@@ -1689,10 +1510,6 @@ class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
 
 class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
   override def toString = s"($lhs - $rhs)"
-* `override def eval     = ???`
-
-class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
-  override def toString = s"($lhs = $rhs)"
 * `override def eval     = ???`
 ```
 ]
@@ -1713,10 +1530,6 @@ class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
 
 class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
   override def toString = s"($lhs - $rhs)"
-  override def eval     = ???
-
-class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
-  override def toString = s"($lhs = $rhs)"
   override def eval     = ???
 ```
 ]
@@ -1738,10 +1551,6 @@ class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
 class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
   override def toString = s"($lhs - $rhs)"
   override def eval     = ???
-
-class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
-  override def toString = s"($lhs = $rhs)"
-  override def eval     = ???
 ```
 ]
 
@@ -1761,10 +1570,6 @@ class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
 
 class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
   override def toString = s"($lhs - $rhs)"
-  override def eval     = ???
-
-class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
-  override def toString = s"($lhs = $rhs)"
   override def eval     = ???
 ```
 ]
@@ -1786,10 +1591,6 @@ class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
 class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
   override def toString = s"($lhs - $rhs)"
   override def eval     = ???
-
-class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
-  override def toString = s"($lhs = $rhs)"
-  override def eval     = ???
 ```
 ]
 
@@ -1810,10 +1611,6 @@ class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
 class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
   override def toString = s"($lhs - $rhs)"
 * override def eval     = `???`
-
-class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
-  override def toString = s"($lhs = $rhs)"
-  override def eval     = ???
 ```
 ]
 
@@ -1834,10 +1631,6 @@ class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
 class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
   override def toString = s"($lhs - $rhs)"
 * override def eval     = `lhs.eval - rhs.eval`
-
-class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
-  override def toString = s"($lhs = $rhs)"
-  override def eval     = ???
 ```
 ]
 
@@ -1845,7 +1638,6 @@ class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
 
 ## Adding interpreters: evaluation
 
-.diff-rm[
 ```scala
 class Num(value: Int) extends Exp[Int]:
   override def toString = value.toString
@@ -1859,9 +1651,30 @@ class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
   override def toString = s"($lhs - $rhs)"
   override def eval     = lhs.eval - rhs.eval
 
-class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
-  override def toString = s"($lhs = $rhs)"
-* override def eval     = `???`
+// ⛔ class Eq needs to be abstract, since
+//   def eval: T in class Exp is not defined
+```
+
+---
+
+## Adding interpreters: evaluation
+
+.diff-add[
+```scala
+class Num(value: Int) extends Exp[Int]:
+  override def toString = value.toString
+  override def eval     = value
+
+class Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
+  override def toString = s"($lhs + $rhs)"
+  override def eval     = lhs.eval + rhs.eval
+
+class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
+  override def toString = s"($lhs - $rhs)"
+  override def eval     = lhs.eval - rhs.eval
+*
+*&#x200B;`class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:`
+* `override def toString = s"($lhs = $rhs)"`
 ```
 ]
 
@@ -1885,7 +1698,113 @@ class Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]:
 
 class Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]:
   override def toString = s"($lhs = $rhs)"
-* override def eval     = `lhs.eval == rhs.eval`
+* `override def eval     = lhs.eval == rhs.eval`
+```
+]
+
+---
+
+## Adding interpreters: evaluation
+
+.center[![](img/1_plus_2_eq_3_minus_1_empty.svg)]
+
+```scala
+1 + 2 = 3 - 1
+```
+
+---
+
+## Adding interpreters: evaluation
+
+.center[![](img/1_plus_2_eq_3_minus_1_hl_eq.svg)]
+
+```scala
+1 + 2 `=` 3 - 1
+```
+
+
+.diff-add[
+```scala
+*&#x200B;`Eq(`
+* `???,`
+* `???`
+*&#x200B;`)`
+```
+]
+
+---
+
+## Adding interpreters: evaluation
+
+.center[![](img/1_plus_2_eq_3_minus_1_hl_lhs_arrow.svg)]
+
+```scala
+&#x200B;`1 + 2` = 3 - 1
+```
+
+.diff-rm[
+```scala
+Eq(
+* `???`,
+  ???
+)
+```
+]
+
+---
+
+## Adding interpreters: evaluation
+
+.center[![](img/1_plus_2_eq_3_minus_1_hl_lhs.svg)]
+
+```scala
+&#x200B;`1 + 2` = 3 - 1
+```
+
+.diff-add[
+```scala
+Eq(
+* `Add(Num(1), Num(2))`,
+  ???
+)
+```
+]
+
+---
+
+## Adding interpreters: evaluation
+
+.center[![](img/1_plus_2_eq_3_minus_1_hl_rhs_arrow.svg)]
+
+```scala
+1 + 2 = `3 - 1`
+```
+
+.diff-rm[
+```scala
+Eq(
+  Add(Num(1), Num(2)),
+* `???`
+)
+```
+]
+
+---
+
+## Adding interpreters: evaluation
+
+.center[![](img/1_plus_2_eq_3_minus_1_hl_rhs.svg)]
+
+```scala
+1 + 2 = `3 - 1`
+```
+
+.diff-add[
+```scala
+Eq(
+  Add(Num(1), Num(2)),
+* `Sub(Num(3), Num(1))`
+)
 ```
 ]
 
@@ -1935,7 +1854,7 @@ Eq(
 
 ## Key takeaways
 
-Feature              || Abstract Data Types
+Feature              || OOP
 ---------------------||--------------------
  Term                || class
  Interpreter         || method
@@ -1947,7 +1866,7 @@ Feature              || Abstract Data Types
 
 ## Key takeaways
 
-Feature              || Abstract Data Types
+Feature              || OOP
 ---------------------||--------------------
  Term                || class
  Interpreter         || method
@@ -1960,7 +1879,7 @@ Feature              || Abstract Data Types
 
 ## Key takeaways
 
-Feature              || Abstract Data Types
+Feature              || OOP
 ---------------------||--------------------
  Term                || class
  Interpreter         || method
@@ -1972,7 +1891,7 @@ Feature              || Abstract Data Types
 
 class: center, middle
 
-# Algebraic Data Types
+# Decoupling data and behaviours
 
 ---
 
@@ -2190,7 +2109,7 @@ def print[T](exp: Exp[T]): String = exp match
 
 ## Pretty printing
 
-.diff-rm[
+.diff-add[
 ```scala
 def print[T](exp: Exp[T]): String = exp match
   case i: Num => i.value.toString
@@ -2204,7 +2123,7 @@ def print[T](exp: Exp[T]): String = exp match
 
 ## Pretty printing
 
-.diff-add[
+.diff-rm[
 ```scala
 def print[T](exp: Exp[T]): String = exp match
   case i: Num => i.value.toString
@@ -2274,9 +2193,12 @@ class Eq(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Boolean]
 abstract class Exp[T]
 
 *&#x200B;`case `class Num(val value: Int) extends Exp[Int]
-*&#x200B;`case `class Add(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]
-*&#x200B;`case `class Sub(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Int]
-*&#x200B;`case `class Eq(val lhs: Exp[Int], val rhs: Exp[Int]) extends Exp[Boolean]
+*&#x200B;`case `class Add(val lhs: Exp[Int], val rhs: Exp[Int])
+*&#x200B;`  `extends Exp[Int]
+*&#x200B;`case `class Sub(val lhs: Exp[Int], val rhs: Exp[Int])
+*&#x200B;`  `extends Exp[Int]
+*&#x200B;`case `class Eq(val lhs: Exp[Int], val rhs: Exp[Int])
+*&#x200B;`  `extends Exp[Boolean]
 ```
 ]
 
@@ -2289,9 +2211,12 @@ abstract class Exp[T]
 abstract class Exp[T]
 
 *case class Num(`val `value: Int) extends Exp[Int]
-*case class Add(`val `lhs: Exp[Int], `val `rhs: Exp[Int]) extends Exp[Int]
-*case class Sub(`val `lhs: Exp[Int], `val `rhs: Exp[Int]) extends Exp[Int]
-*case class Eq(`val `lhs: Exp[Int], `val `rhs: Exp[Int]) extends Exp[Boolean]
+*case class Add(`val `lhs: Exp[Int], `val `rhs: Exp[Int])
+*&#x200B;`  `extends Exp[Int]
+*case class Sub(`val `lhs: Exp[Int], `val `rhs: Exp[Int])
+*&#x200B;`  `extends Exp[Int]
+*case class Eq(`val `lhs: Exp[Int], `val `rhs: Exp[Int])
+*&#x200B;`  `extends Exp[Boolean]
 ```
 ]
 
@@ -2559,11 +2484,26 @@ eval(Eq(
 
 ## Exhaustivity
 
+.center[![](img/exp_1_plus_2_eq_3_minus_1_hl_num_add_sub.svg)]
+
 ```scala
 def eval[T](exp: Exp[T]): T = exp match
   case `Num(i)`        => i
   case `Add(lhs, rhs)` => eval(lhs) + eval(rhs)
   case `Sub(lhs, rhs)` => eval(lhs) - eval(rhs)
+```
+
+---
+
+## Exhaustivity
+
+.center[![](img/exp_1_plus_2_eq_3_minus_1_hl_eq.svg)]
+
+```scala
+def eval[T](exp: Exp[T]): T = exp match
+  case Num(i)        => i
+  case Add(lhs, rhs) => eval(lhs) + eval(rhs)
+  case Sub(lhs, rhs) => eval(lhs) - eval(rhs)
 ```
 
 ---
@@ -2619,6 +2559,21 @@ def eval[T](exp: Exp[T]): T = exp match
 //
 //   It would fail on pattern case: Eq(_, _)
 ```
+
+---
+
+## Exhaustivity
+
+.diff-add[
+```scala
+def eval[T](exp: Exp[T]): T = exp match
+  case Num(i)        => i
+  case Add(lhs, rhs) => eval(lhs) + eval(rhs)
+  case Sub(lhs, rhs) => eval(lhs) - eval(rhs)
+* `case Eq(lhs, rhs)  => eval(lhs) == eval(rhs)`
+```
+]
+
 
 ---
 
@@ -2701,7 +2656,7 @@ It's a subset of Algebraic Data Types.
 
 ## Key takeaways
 
-Feature              || Abstract Data Types | Algebraic Data Types
+Feature              || OOP                 | Algebraic Data Types
 ---------------------||---------------------|---------------------
  Term                || class               | &nbsp;
  Interpreter         || method              | &nbsp;
@@ -2713,7 +2668,7 @@ Feature              || Abstract Data Types | Algebraic Data Types
 
 ## Key takeaways
 
-Feature              || Abstract Data Types | Algebraic Data Types
+Feature              || OOP                 | Algebraic Data Types
 ---------------------||---------------------|---------------------
  Term                || class               | data type
  Interpreter         || method              | &nbsp;
@@ -2725,7 +2680,7 @@ Feature              || Abstract Data Types | Algebraic Data Types
 
 ## Key takeaways
 
-Feature              || Abstract Data Types | Algebraic Data Types
+Feature              || OOP                 | Algebraic Data Types
 ---------------------||---------------------|---------------------
  Term                || class               | data type
  Interpreter         || method              | function
@@ -2739,7 +2694,7 @@ Feature              || Abstract Data Types | Algebraic Data Types
 ## Key takeaways
 
 
-Feature              || Abstract Data Types | Algebraic Data Types
+Feature              || OOP                 | Algebraic Data Types
 ---------------------||---------------------|---------------------
  Term                || class               | data type
  Interpreter         || method              | function
@@ -2787,16 +2742,6 @@ class: center, middle
 
 ## Adding terms: multiplication
 
-.center[![](img/2_times_3.svg)]
-
-```scala
-2 * 3
-```
-
----
-
-## Adding terms: multiplication
-
 .center[![](img/exp_build_2_times_3_hl_times.svg)]
 
 ```scala
@@ -2820,7 +2765,7 @@ enum Exp[T]:
   case Add(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
   case Sub(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Int]
   case Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]
-* `case Mult() extends Exp[Int]`
+* `case Mult()`
 ```
 ]
 
@@ -2934,19 +2879,6 @@ def print[T](exp: Exp[T]): String = exp match
   case Add(lhs, rhs)  => s"(${print(lhs)} + ${print(rhs)})"
   case Sub(lhs, rhs)  => s"(${print(lhs)} - ${print(rhs)})"
   case Eq(lhs, rhs)   => s"(${print(lhs)} = ${print(rhs)})"
-```
-
-
----
-
-## Adding terms: multiplication
-
-```scala
-def print[T](exp: Exp[T]): String = exp match
-  case Num(i)         => i.toString
-  case Add(lhs, rhs)  => s"(${print(lhs)} + ${print(rhs)})"
-  case Sub(lhs, rhs)  => s"(${print(lhs)} - ${print(rhs)})"
-  case Eq(lhs, rhs)   => s"(${print(lhs)} = ${print(rhs)})"
 // ⛔ match may not be exhaustive.
 //   It would fail on pattern case: Exp.Mult(_, _)
 ```
@@ -2970,21 +2902,28 @@ def print[T](exp: Exp[T]): String = exp match
 
 ## Adding terms: multiplication
 
-.center[![](img/exp_2_times_3.svg)]
+.center[![](img/3_plus_3_eq_2_mult_3_empty.svg)]
 
 ```scala
-Mult(Num(2), Num(3))
+3 + 3 = 2 * 3
 ```
 
 ---
 
 ## Adding terms: multiplication
 
-.center[![](img/exp_2_times_3.svg)]
+.center[![](img/3_plus_3_eq_2_mult_3_hl_eq.svg)]
+
+```scala
+3 + 3 `=` 2 * 3
+```
 
 .diff-add[
 ```scala
-*&#x200B;`print(`Mult(Num(2), Num(3))`)`
+*&#x200B;`Eq(`
+* `???,`
+* `???`
+*&#x200B;`)`
 ```
 ]
 
@@ -2992,11 +2931,119 @@ Mult(Num(2), Num(3))
 
 ## Adding terms: multiplication
 
-.center[![](img/exp_2_times_3.svg)]
+.center[![](img/3_plus_3_eq_2_mult_3_hl_lhs_arrow.svg)]
 
 ```scala
-print(Mult(Num(2), Num(3)))
-// val res2: String = (2 * 3)
+&#x200B;`3 + 3` = 2 * 3
+```
+
+.diff-rm[
+```scala
+Eq(
+* `???`,
+  ???
+)
+```
+]
+
+---
+
+## Adding terms: multiplication
+
+.center[![](img/3_plus_3_eq_2_mult_3_hl_lhs.svg)]
+
+```scala
+&#x200B;`3 + 3` = 2 * 3
+```
+
+.diff-add[
+```scala
+Eq(
+* `Add(Num(3), Num(3))`,
+  ???
+)
+```
+]
+
+---
+
+## Adding terms: multiplication
+
+.center[![](img/3_plus_3_eq_2_mult_3_hl_rhs_arrow.svg)]
+
+```scala
+3 + 3 = `2 * 3`
+```
+
+.diff-rm[
+```scala
+Eq(
+  Add(Num(3), Num(3)),
+* `???`
+)
+```
+]
+
+---
+
+## Adding terms: multiplication
+
+.center[![](img/3_plus_3_eq_2_mult_3_hl_rhs.svg)]
+
+```scala
+3 + 3 = `2 * 3`
+```
+
+.diff-add[
+```scala
+Eq(
+  Add(Num(3), Num(3)),
+* `Mult(Num(2), Num(3))`
+)
+```
+]
+
+
+---
+
+## Adding terms: multiplication
+
+.center[![](img/3_plus_3_eq_2_mult_3.svg)]
+
+```scala
+Eq(
+  Add(Num(3), Num(3)),
+  Mult(Num(2), Num(3))
+)
+```
+
+---
+
+## Adding terms: multiplication
+
+.center[![](img/3_plus_3_eq_2_mult_3.svg)]
+
+.diff-add[
+```scala
+*&#x200B;`print(`Eq(
+  Add(Num(3), Num(3)),
+  Mult(Num(2), Num(3))
+*)`)`
+```
+]
+
+---
+
+## Adding terms: multiplication
+
+.center[![](img/3_plus_3_eq_2_mult_3.svg)]
+
+```scala
+print(Eq(
+  Add(Num(3), Num(3)),
+  Mult(Num(2), Num(3))
+))
+// val res3: String = ((3 + 3) = (2 * 3))
 ```
 
 ---
@@ -3030,21 +3077,14 @@ def eval[T](exp: Exp[T]): T = exp match
 
 ## Adding terms: multiplication
 
-.center[![](img/exp_2_times_3.svg)]
+.center[![](img/3_plus_3_eq_2_mult_3.svg)]
 
+.diff-rm[
 ```scala
-Mult(Num(2), Num(3))
-```
-
----
-
-## Adding terms: multiplication
-
-.center[![](img/exp_2_times_3.svg)]
-
-.diff-add[
-```scala
-*&#x200B;`eval(`Mult(Num(2), Num(3))`)`
+*&#x200B;`print`(Eq(
+  Add(Num(3), Num(3)),
+  Mult(Num(2), Num(3))
+))
 ```
 ]
 
@@ -3052,39 +3092,186 @@ Mult(Num(2), Num(3))
 
 ## Adding terms: multiplication
 
-.center[![](img/exp_2_times_3.svg)]
+.center[![](img/3_plus_3_eq_2_mult_3.svg)]
+
+.diff-add[
+```scala
+*&#x200B;`eval`(Eq(
+  Add(Num(3), Num(3)),
+  Mult(Num(2), Num(3))
+))
+```
+]
+
+---
+
+## Adding terms: multiplication
+
+.center[![](img/3_plus_3_eq_2_mult_3.svg)]
 
 ```scala
-eval(Mult(Num(2), Num(3)))
-// val res3: Int = 6
+eval(Eq(
+  Add(Num(3), Num(3)),
+  Mult(Num(2), Num(3))
+))
+// val res4: Boolean = true
 ```
 
 ---
 
 ## Adding interpreters: rewriting
 
-.center[![](img/3_minus_neg_1.svg)]
+.center[![](img/3_minus_neg_1_empty.svg)]
 
 ```scala
 3 - (-1)
 ```
 
-TODO REPRESENT TREE 3 + 1
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/3_minus_neg_1_hl_neg.svg)]
+
+```scala
+3 `-` (-1)
+```
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/3_minus_neg_1_hl_3_neg_1.svg)]
+
+```scala
+&#x200B;`3` - (`-1`)
+```
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/3_minus_neg_1_hl_minus_neg1.svg)]
+
+.diff-rm[
+```scala
+*3 `- (-1)`
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/3_plus_1_hl_plus_1.svg)]
+
+.diff-add[
+```scala
+*3 `+ 1`
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+```scala
+def opt[T](`exp: Exp[T]`): Exp[T] = ???
+```
+
+---
+
+## Adding interpreters: rewriting
+
+```scala
+def opt[T](exp: Exp[T]): `Exp[T]` = ???
+```
 
 
 ---
 
 ## Adding interpreters: rewriting
 
-.center[![](img/exp_3_minus_neg_1.svg)]
-
+.diff-rm[
 ```scala
-print(Sub(
-  Num(3),
-  Num(-1)
-))
-// val res4: String = (3 - -1)
+*def opt[T](exp: Exp[T]): Exp[T] = `???`
 ```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-add[
+```scala
+*def opt[T](exp: Exp[T]): Exp[T] = `exp match`
+* `case Num(i)           => ???`
+* `case Add(lhs, rhs)    => ???`
+* `case Mult(lhs, rhs)   => ???`
+* `case Eq(lhs, rhs)     => ???`
+* `case Sub(lhs, rhs)    => ???`
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-rm[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+* case Num(i)           => `???`
+  case Add(lhs, rhs)    => ???
+  case Mult(lhs, rhs)   => ???
+  case Eq(lhs, rhs)     => ???
+  case Sub(lhs, rhs)    => ???
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-add[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+* case Num(i)           => `Num(i)`
+  case Add(lhs, rhs)    => ???
+  case Mult(lhs, rhs)   => ???
+  case Eq(lhs, rhs)     => ???
+  case Sub(lhs, rhs)    => ???
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-rm[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case Num(i)           => Num(i)
+* case Add(lhs, rhs)    => `???`
+* case Mult(lhs, rhs)   => `???`
+* case Eq(lhs, rhs)     => `???`
+  case Sub(lhs, rhs)    => ???
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-add[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case Num(i)           => Num(i)
+* case Add(lhs, rhs)    => `Add(opt(lhs), opt(rhs))`
+* case Mult(lhs, rhs)   => `Mult(opt(lhs), opt(rhs))`
+* case Eq(lhs, rhs)     => `Eq(opt(lhs), opt(rhs))`
+  case Sub(lhs, rhs)    => ???
+```
+]
 
 ---
 
@@ -3092,49 +3279,372 @@ print(Sub(
 
 ```scala
 def opt[T](exp: Exp[T]): Exp[T] = exp match
-  case num: Num         => num
+  case Num(i)           => Num(i)
+  case Add(lhs, rhs)    => Add(`opt(lhs)`, `opt(rhs)`)
+  case Mult(lhs, rhs)   => Mult(`opt(lhs)`, `opt(rhs)`)
+  case Eq(lhs, rhs)     => Eq(`opt(lhs)`, `opt(rhs)`)
+  case Sub(lhs, rhs)    => ???
+```
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-rm[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case Num(i)           => Num(i)
+  case Add(lhs, rhs)    => Add(opt(lhs), opt(rhs))
+  case Mult(lhs, rhs)   => Mult(opt(lhs), opt(rhs))
+  case Eq(lhs, rhs)     => Eq(opt(lhs), opt(rhs))
+* `case Sub(lhs, rhs)    => ???`
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-add[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case Num(i)           => Num(i)
+  case Add(lhs, rhs)    => Add(opt(lhs), opt(rhs))
+  case Mult(lhs, rhs)   => Mult(opt(lhs), opt(rhs))
+  case Eq(lhs, rhs)     => Eq(opt(lhs), opt(rhs))
+* `case Sub(lhs, Num(i)) => ???`
+* `case Sub(lhs, rhs)    => ???`
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-rm[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case Num(i)           => Num(i)
+  case Add(lhs, rhs)    => Add(opt(lhs), opt(rhs))
+  case Mult(lhs, rhs)   => Mult(opt(lhs), opt(rhs))
+  case Eq(lhs, rhs)     => Eq(opt(lhs), opt(rhs))
+  case Sub(lhs, Num(i)) => ???
+* case Sub(lhs, rhs)    => `???`
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-add[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case Num(i)           => Num(i)
+  case Add(lhs, rhs)    => Add(opt(lhs), opt(rhs))
+  case Mult(lhs, rhs)   => Mult(opt(lhs), opt(rhs))
+  case Eq(lhs, rhs)     => Eq(opt(lhs), opt(rhs))
+  case Sub(lhs, Num(i)) => ???
+* case Sub(lhs, rhs)    => `Sub(opt(lhs), opt(rhs))`
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-rm[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case Num(i)           => Num(i)
+  case Add(lhs, rhs)    => Add(opt(lhs), opt(rhs))
+  case Mult(lhs, rhs)   => Mult(opt(lhs), opt(rhs))
+  case Eq(lhs, rhs)     => Eq(opt(lhs), opt(rhs))
+* case Sub(lhs, Num(i)) => `???`
+  case Sub(lhs, rhs)    => Sub(opt(lhs), opt(rhs))
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-add[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case Num(i)           => Num(i)
+  case Add(lhs, rhs)    => Add(opt(lhs), opt(rhs))
+  case Mult(lhs, rhs)   => Mult(opt(lhs), opt(rhs))
+  case Eq(lhs, rhs)     => Eq(opt(lhs), opt(rhs))
+* case Sub(lhs, Num(i)) => `if i < 0 then ???`
+*                          `else          ???`
+  case Sub(lhs, rhs)    => Sub(opt(lhs), opt(rhs))
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-rm[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case Num(i)           => Num(i)
+  case Add(lhs, rhs)    => Add(opt(lhs), opt(rhs))
+  case Mult(lhs, rhs)   => Mult(opt(lhs), opt(rhs))
+  case Eq(lhs, rhs)     => Eq(opt(lhs), opt(rhs))
+* case Sub(lhs, Num(i)) => if i < 0 then `???`
+                           else          ???
+  case Sub(lhs, rhs)    => Sub(opt(lhs), opt(rhs))
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-add[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case Num(i)           => Num(i)
+  case Add(lhs, rhs)    => Add(opt(lhs), opt(rhs))
+  case Mult(lhs, rhs)   => Mult(opt(lhs), opt(rhs))
+  case Eq(lhs, rhs)     => Eq(opt(lhs), opt(rhs))
+* case Sub(lhs, Num(i)) => if i < 0 then `Add(opt(lhs), Num(-i))`
+                           else          ???
+  case Sub(lhs, rhs)    => Sub(opt(lhs), opt(rhs))
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.diff-rm[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case Num(i)           => Num(i)
   case Add(lhs, rhs)    => Add(opt(lhs), opt(rhs))
   case Mult(lhs, rhs)   => Mult(opt(lhs), opt(rhs))
   case Eq(lhs, rhs)     => Eq(opt(lhs), opt(rhs))
   case Sub(lhs, Num(i)) => if i < 0 then Add(opt(lhs), Num(-i))
-                           else          Sub(opt(lhs), Num(i))
+*                          else          `???`
   case Sub(lhs, rhs)    => Sub(opt(lhs), opt(rhs))
+```
+]
 
+---
+
+## Adding interpreters: rewriting
+
+.diff-add[
+```scala
+def opt[T](exp: Exp[T]): Exp[T] = exp match
+  case Num(i)           => Num(i)
+  case Add(lhs, rhs)    => Add(opt(lhs), opt(rhs))
+  case Mult(lhs, rhs)   => Mult(opt(lhs), opt(rhs))
+  case Eq(lhs, rhs)     => Eq(opt(lhs), opt(rhs))
+  case Sub(lhs, Num(i)) => if i < 0 then Add(opt(lhs), Num(-i))
+*                          else          `Sub(opt(lhs), Num(i))`
+  case Sub(lhs, rhs)    => Sub(opt(lhs), opt(rhs))
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/1_plus_2_eq_3_minus_neg1_empty.svg)]
+
+```scala
+1 + 2 = 3 - (-1)
 ```
 
 ---
 
 ## Adding interpreters: rewriting
 
-.center[![](img/exp_3_minus_neg_1.svg)]
+.center[![](img/1_plus_2_eq_3_minus_neg1_empty_hl_eq.svg)]
 
 ```scala
-print(Sub(
-  Num(3),
-  Num(-1)
+1 + 2 `=` 3 - (-1)
+```
+
+.diff-add[
+```scala
+*&#x200B;`Eq(`
+* `???,`
+* `???`
+*&#x200B;`)`
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/1_plus_2_eq_3_minus_neg1_empty_hl_lhs_arrow.svg)]
+
+```scala
+&#x200B;`1 + 2` = 3 - (-1)
+```
+
+.diff-rm[
+```scala
+Eq(
+* `???`,
+  ???
+)
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/1_plus_2_eq_3_minus_neg1_empty_hl_lhs.svg)]
+
+```scala
+&#x200B;`1 + 2` = 3 - (-1)
+```
+
+.diff-add[
+```scala
+Eq(
+* `Add(Num(1), Num(2))`,
+  ???
+)
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/1_plus_2_eq_3_minus_neg1_empty_hl_rhs_arrow.svg)]
+
+```scala
+1 + 2 = `3 - (-1)`
+```
+
+.diff-rm[
+```scala
+Eq(
+  Add(Num(1), Num(2)),
+* `???`
+)
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/1_plus_2_eq_3_minus_neg1_empty_hl_rhs.svg)]
+
+```scala
+1 + 2 = `3 - (-1)`
+```
+
+.diff-add[
+```scala
+Eq(
+  Add(Num(1), Num(2)),
+* `Sub(Num(3), Num(-1))`
+)
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/exp_1_plus_2_eq_3_minus_neg1.svg)]
+
+```scala
+Eq(
+  Add(Num(1), Num(2)),
+  Sub(Num(3), Num(-1))
+)
+```
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/exp_1_plus_2_eq_3_minus_neg1.svg)]
+
+.diff-add[
+```scala
+*&#x200B;`print(`Eq(
+  Add(Num(1), Num(2)),
+  Sub(Num(3), Num(-1))
+*)`)`
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/exp_1_plus_2_eq_3_minus_neg1.svg)]
+
+```scala
+print(Eq(
+  Add(Num(1), Num(2)),
+  Sub(Num(3), Num(-1))
 ))
-// val res5: String = (3 - -1)
+// val res6: String = ((1 + 2) = (3 - -1))
 ```
 
 ---
 
 ## Adding interpreters: rewriting
 
-.center[![](img/exp_3_plus_1.svg)]
+.center[![](img/exp_1_plus_2_eq_3_minus_neg1.svg)]
+
+.diff-add[
+```scala
+*&#x200B;print(`opt(`Eq(
+  Add(Num(1), Num(2)),
+  Sub(Num(3), Num(-1))
+*)`)`)
+```
+]
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/exp_1_plus_2_eq_3_minus_neg1_hl_sub_negone.svg)]
 
 ```scala
-print(opt(Sub(
-  Num(3),
-  Num(-1)
+print(opt(Eq(
+  Add(Num(1), Num(2)),
+  `Sub`(Num(3), `Num(-1)`)
 )))
-// val res6: String = (3 + 1)
+```
+
+
+---
+
+## Adding interpreters: rewriting
+
+.center[![](img/exp_1_plus_2_eq_3_minus_neg1.svg)]
+
+```scala
+print(opt(Eq(
+  Add(Num(1), Num(2)),
+  Sub(Num(3), Num(-1))
+)))
+// val res7: String = ((1 + 2) = (3 + 1))
 ```
 
 ---
 
 ## Key takeaways
 
-Feature              || Abstract Data Types | Algebraic Data Types
+Feature              || OOP                 | Algebraic Data Types
 ---------------------||---------------------|---------------------
  Term                || class               | data type
  Interpreter         || method              | function
@@ -3147,7 +3657,7 @@ Feature              || Abstract Data Types | Algebraic Data Types
 
 ## Key takeaways
 
-Feature              || Abstract Data Types | Algebraic Data Types
+Feature              || OOP                 | Algebraic Data Types
 ---------------------||---------------------|---------------------
  Term                || class               | data type
  Interpreter         || method              | function
@@ -3160,7 +3670,7 @@ Feature              || Abstract Data Types | Algebraic Data Types
 
 ## Key takeaways
 
-Feature              || Abstract Data Types | Algebraic Data Types
+Feature              || OOP                 | Algebraic Data Types
 ---------------------||---------------------|---------------------
  Term                || class               | data type
  Interpreter         || method              | function

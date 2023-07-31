@@ -8,16 +8,16 @@
  viewBox="0.00 0.00 310.00 188.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
 <title>%3</title>
-<!-- one1 -->
-<!-- two -->
+<!-- three1 -->
+<!-- three2 -->
 <!-- add -->
-<!-- add&#45;&gt;one1 -->
-<!-- add&#45;&gt;two -->
-<!-- three -->
-<!-- one2 -->
-<!-- sub -->
-<!-- sub&#45;&gt;three -->
-<!-- sub&#45;&gt;one2 -->
+<!-- add&#45;&gt;three1 -->
+<!-- add&#45;&gt;three2 -->
+<!-- two -->
+<!-- three3 -->
+<!-- mult -->
+<!-- mult&#45;&gt;two -->
+<!-- mult&#45;&gt;three3 -->
 <!-- eq -->
 <g id="node7" class="node operator">
 <title>eq</title>
@@ -25,6 +25,6 @@
 <text text-anchor="middle" x="151" y="-158.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">Eq</text>
 </g>
 <!-- eq&#45;&gt;add -->
-<!-- eq&#45;&gt;sub -->
+<!-- eq&#45;&gt;mult -->
 </g>
 </svg>

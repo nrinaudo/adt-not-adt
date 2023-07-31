@@ -164,6 +164,10 @@ img {
     max-width: 100%;
 }
 
+.hidden {
+    color: transparent;
+}
+
 .diff-rm .remark-code-span-highlighted {
     background-color: #fdb8c0;
 }

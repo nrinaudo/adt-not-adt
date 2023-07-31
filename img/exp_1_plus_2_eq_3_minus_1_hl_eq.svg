@@ -39,39 +39,39 @@
 <polygon fill="#d0dce3" stroke="#d0dce3" points="114.5,-46.1 111,-36.1 107.5,-46.1 114.5,-46.1"/>
 </g>
 <!-- three -->
-<g id="node4" class="node value">
+<g id="node4" class="node value,disabled">
 <title>three</title>
-<path fill="#ffffff" stroke="#586e75" d="M210,-36C210,-36 172,-36 172,-36 166,-36 160,-30 160,-24 160,-24 160,-12 160,-12 160,-6 166,0 172,0 172,0 210,0 210,0 216,0 222,-6 222,-12 222,-12 222,-24 222,-24 222,-30 216,-36 210,-36"/>
-<text text-anchor="middle" x="191" y="-14.3" font-family="Inter,Arial" font-size="14.00" fill="#586e75">Num(3)</text>
+<path fill="#ffffff" stroke="#d0dce3" d="M210,-36C210,-36 172,-36 172,-36 166,-36 160,-30 160,-24 160,-24 160,-12 160,-12 160,-6 166,0 172,0 172,0 210,0 210,0 216,0 222,-6 222,-12 222,-12 222,-24 222,-24 222,-30 216,-36 210,-36"/>
+<text text-anchor="middle" x="191" y="-14.3" font-family="Inter,Arial" font-size="14.00" fill="#d0dce3">Num(3)</text>
 </g>
 <!-- one2 -->
-<g id="node5" class="node value">
+<g id="node5" class="node value,disabled">
 <title>one2</title>
-<path fill="#ffffff" stroke="#586e75" d="M290,-36C290,-36 252,-36 252,-36 246,-36 240,-30 240,-24 240,-24 240,-12 240,-12 240,-6 246,0 252,0 252,0 290,0 290,0 296,0 302,-6 302,-12 302,-12 302,-24 302,-24 302,-30 296,-36 290,-36"/>
-<text text-anchor="middle" x="271" y="-14.3" font-family="Inter,Arial" font-size="14.00" fill="#586e75">Num(1)</text>
+<path fill="#ffffff" stroke="#d0dce3" d="M290,-36C290,-36 252,-36 252,-36 246,-36 240,-30 240,-24 240,-24 240,-12 240,-12 240,-6 246,0 252,0 252,0 290,0 290,0 296,0 302,-6 302,-12 302,-12 302,-24 302,-24 302,-30 296,-36 290,-36"/>
+<text text-anchor="middle" x="271" y="-14.3" font-family="Inter,Arial" font-size="14.00" fill="#d0dce3">Num(1)</text>
 </g>
 <!-- sub -->
-<g id="node6" class="node operator">
+<g id="node6" class="node operator,disabled">
 <title>sub</title>
-<path fill="#586e75" stroke="#586e75" d="M206,-108C206,-108 176,-108 176,-108 170,-108 164,-102 164,-96 164,-96 164,-84 164,-84 164,-78 170,-72 176,-72 176,-72 206,-72 206,-72 212,-72 218,-78 218,-84 218,-84 218,-96 218,-96 218,-102 212,-108 206,-108"/>
+<path fill="#d0dce3" stroke="#d0dce3" d="M206,-108C206,-108 176,-108 176,-108 170,-108 164,-102 164,-96 164,-96 164,-84 164,-84 164,-78 170,-72 176,-72 176,-72 206,-72 206,-72 212,-72 218,-78 218,-84 218,-84 218,-96 218,-96 218,-102 212,-108 206,-108"/>
 <text text-anchor="middle" x="191" y="-86.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">Sub</text>
 </g>
 <!-- sub&#45;&gt;three -->
-<g id="edge3" class="edge">
+<g id="edge3" class="edge disabled">
 <title>sub&#45;&gt;three</title>
-<path fill="none" stroke="#586e75" d="M191,-71.7C191,-63.98 191,-54.71 191,-46.11"/>
-<polygon fill="#586e75" stroke="#586e75" points="194.5,-46.1 191,-36.1 187.5,-46.1 194.5,-46.1"/>
+<path fill="none" stroke="#d0dce3" d="M191,-71.7C191,-63.98 191,-54.71 191,-46.11"/>
+<polygon fill="#d0dce3" stroke="#d0dce3" points="194.5,-46.1 191,-36.1 187.5,-46.1 194.5,-46.1"/>
 </g>
 <!-- sub&#45;&gt;one2 -->
-<g id="edge4" class="edge">
+<g id="edge4" class="edge disabled">
 <title>sub&#45;&gt;one2</title>
-<path fill="none" stroke="#586e75" d="M210.78,-71.7C220.75,-62.97 233.01,-52.24 243.86,-42.75"/>
-<polygon fill="#586e75" stroke="#586e75" points="246.23,-45.32 251.45,-36.1 241.62,-40.06 246.23,-45.32"/>
+<path fill="none" stroke="#d0dce3" d="M210.78,-71.7C220.75,-62.97 233.01,-52.24 243.86,-42.75"/>
+<polygon fill="#d0dce3" stroke="#d0dce3" points="246.23,-45.32 251.45,-36.1 241.62,-40.06 246.23,-45.32"/>
 </g>
 <!-- eq -->
-<g id="node7" class="node operator,disabled">
+<g id="node7" class="node operator">
 <title>eq</title>
-<path fill="#d0dce3" stroke="#d0dce3" d="M166,-180C166,-180 136,-180 136,-180 130,-180 124,-174 124,-168 124,-168 124,-156 124,-156 124,-150 130,-144 136,-144 136,-144 166,-144 166,-144 172,-144 178,-150 178,-156 178,-156 178,-168 178,-168 178,-174 172,-180 166,-180"/>
+<path fill="#586e75" stroke="#586e75" d="M166,-180C166,-180 136,-180 136,-180 130,-180 124,-174 124,-168 124,-168 124,-156 124,-156 124,-150 130,-144 136,-144 136,-144 166,-144 166,-144 172,-144 178,-150 178,-156 178,-156 178,-168 178,-168 178,-174 172,-180 166,-180"/>
 <text text-anchor="middle" x="151" y="-158.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">Eq</text>
 </g>
 <!-- eq&#45;&gt;add -->
