@@ -39,9 +39,9 @@
 <polygon fill="#d0dce3" stroke="#d0dce3" points="43.48,-115.4 35.8,-108.1 37.26,-118.6 43.48,-115.4"/>
 </g>
 <!-- add2 -->
-<g id="node5" class="node operator,disabled">
+<g id="node5" class="node operator">
 <title>add2</title>
-<path fill="#d0dce3" stroke="#d0dce3" d="M114,-108C114,-108 84,-108 84,-108 78,-108 72,-102 72,-96 72,-96 72,-84 72,-84 72,-78 78,-72 84,-72 84,-72 114,-72 114,-72 120,-72 126,-78 126,-84 126,-84 126,-96 126,-96 126,-102 120,-108 114,-108"/>
+<path fill="#586e75" stroke="#586e75" d="M114,-108C114,-108 84,-108 84,-108 78,-108 72,-102 72,-96 72,-96 72,-84 72,-84 72,-78 78,-72 84,-72 84,-72 114,-72 114,-72 120,-72 126,-78 126,-84 126,-84 126,-96 126,-96 126,-102 120,-108 114,-108"/>
 <text text-anchor="middle" x="99" y="-86.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">Add</text>
 </g>
 <!-- add1&#45;&gt;add2 -->
@@ -51,16 +51,16 @@
 <polygon fill="#d0dce3" stroke="#d0dce3" points="88.74,-118.6 90.2,-108.1 82.52,-115.4 88.74,-118.6"/>
 </g>
 <!-- add2&#45;&gt;two -->
-<g id="edge3" class="edge disabled">
+<g id="edge3" class="edge">
 <title>add2&#45;&gt;two</title>
-<path fill="none" stroke="#d0dce3" d="M90.1,-71.7C86,-63.73 81.05,-54.1 76.51,-45.26"/>
-<polygon fill="#d0dce3" stroke="#d0dce3" points="79.48,-43.4 71.8,-36.1 73.26,-46.6 79.48,-43.4"/>
+<path fill="none" stroke="#586e75" d="M90.1,-71.7C86,-63.73 81.05,-54.1 76.51,-45.26"/>
+<polygon fill="#586e75" stroke="#586e75" points="79.48,-43.4 71.8,-36.1 73.26,-46.6 79.48,-43.4"/>
 </g>
 <!-- add2&#45;&gt;three -->
-<g id="edge4" class="edge disabled">
+<g id="edge4" class="edge">
 <title>add2&#45;&gt;three</title>
-<path fill="none" stroke="#d0dce3" d="M107.9,-71.7C112,-63.73 116.95,-54.1 121.49,-45.26"/>
-<polygon fill="#d0dce3" stroke="#d0dce3" points="124.74,-46.6 126.2,-36.1 118.52,-43.4 124.74,-46.6"/>
+<path fill="none" stroke="#586e75" d="M107.9,-71.7C112,-63.73 116.95,-54.1 121.49,-45.26"/>
+<polygon fill="#586e75" stroke="#586e75" points="124.74,-46.6 126.2,-36.1 118.52,-43.4 124.74,-46.6"/>
 </g>
 </g>
 </svg>

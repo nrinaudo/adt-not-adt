@@ -9,18 +9,13 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
 <title>%3</title>
 <!-- one -->
-<g id="node1" class="node value">
-<title>one</title>
-<path fill="#ffffff" stroke="#586e75" d="M42,-108C42,-108 12,-108 12,-108 6,-108 0,-102 0,-96 0,-96 0,-84 0,-84 0,-78 6,-72 12,-72 12,-72 42,-72 42,-72 48,-72 54,-78 54,-84 54,-84 54,-96 54,-96 54,-102 48,-108 42,-108"/>
-<text text-anchor="middle" x="27" y="-86.3" font-family="Inter,Arial" font-size="14.00" fill="#586e75">1</text>
-</g>
 <!-- two -->
 <!-- three -->
 <!-- add1 -->
 <g id="node4" class="node operator,disabled">
 <title>add1</title>
 <path fill="#d0dce3" stroke="#d0dce3" d="M78,-180C78,-180 48,-180 48,-180 42,-180 36,-174 36,-168 36,-168 36,-156 36,-156 36,-150 42,-144 48,-144 48,-144 78,-144 78,-144 84,-144 90,-150 90,-156 90,-156 90,-168 90,-168 90,-174 84,-180 78,-180"/>
-<text text-anchor="middle" x="63" y="-158.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">+</text>
+<text text-anchor="middle" x="63" y="-158.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">Add</text>
 </g>
 <!-- add1&#45;&gt;one -->
 <g id="edge1" class="edge">

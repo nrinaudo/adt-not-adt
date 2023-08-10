@@ -15,7 +15,7 @@
 <g id="node4" class="node operator">
 <title>add1</title>
 <path fill="#586e75" stroke="#586e75" d="M78,-180C78,-180 48,-180 48,-180 42,-180 36,-174 36,-168 36,-168 36,-156 36,-156 36,-150 42,-144 48,-144 48,-144 78,-144 78,-144 84,-144 90,-150 90,-156 90,-156 90,-168 90,-168 90,-174 84,-180 78,-180"/>
-<text text-anchor="middle" x="63" y="-158.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">+</text>
+<text text-anchor="middle" x="63" y="-158.3" font-family="Inter,Arial" font-size="14.00" fill="#ffffff">Add</text>
 </g>
 <!-- add1&#45;&gt;one -->
 <!-- add2 -->
