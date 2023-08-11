@@ -4124,9 +4124,11 @@ print(Eq(
 
 .center[![](img/exp_1_plus_2_eq_3_minus_neg1_hl_sub_negone.svg)]
 
+.diff-rm[
 ```scala
-(1 + 2) = (3 - -1)
+*(1 + 2) = (3 `- -1`)
 ```
+]
 
 ```scala
 print(opt(Eq(
@@ -4142,9 +4144,11 @@ print(opt(Eq(
 
 .center[![](img/exp_1_plus_2_eq_3_add_1.svg)]
 
+.diff-add[
 ```scala
-(1 + 2) = (3 - -1)
+*(1 + 2) = (3 `+ 1`)
 ```
+]
 
 ```scala
 print(opt(Eq(
