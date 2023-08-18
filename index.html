@@ -325,14 +325,16 @@ Add(1, Add(2, 3))
 
 .center[![](img/subtyping_a.svg)]
 
-```scala
-1 + (2 + 3)
-```
+---
+
+## Subtyping
+
+.center[![](img/subtyping_a.svg)]
 
 ```scala
-class Add(lhs: Int, rhs: Int)
+def foo(a: `A`) = ???
 
-Add(1, Add(2, 3))
+foo(`new A`)
 ```
 
 ---
@@ -341,14 +343,11 @@ Add(1, Add(2, 3))
 
 .center[![](img/subtyping_a_b.svg)]
 
-```scala
-1 + (2 + 3)
-```
 
 ```scala
-class Add(lhs: Int, rhs: Int)
+def foo(a: A) = ???
 
-Add(1, Add(2, 3))
+foo(new A)
 ```
 
 ---
@@ -358,13 +357,9 @@ Add(1, Add(2, 3))
 .center[![](img/subtyping_a_b_linked.svg)]
 
 ```scala
-1 + (2 + 3)
-```
+def foo(a: A) = ???
 
-```scala
-class Add(lhs: Int, rhs: Int)
-
-Add(1, Add(2, 3))
+foo(new A)
 ```
 
 ---
@@ -373,15 +368,27 @@ Add(1, Add(2, 3))
 
 .center[![](img/subtyping_a_b_hl_b.svg)]
 
+.diff-rm[
 ```scala
-1 + (2 + 3)
-```
+def foo(a: A) = ???
 
+*foo(new `A`)
+```
+]
+
+---
+
+## Subtyping
+
+.center[![](img/subtyping_a_b_hl_b.svg)]
+
+.diff-add[
 ```scala
-class Add(lhs: Int, rhs: Int)
+def foo(a: A) = ???
 
-Add(1, Add(2, 3))
+*foo(new `B`)
 ```
+]
 
 ---
 
@@ -390,15 +397,10 @@ Add(1, Add(2, 3))
 .center[![](img/subtyping_a_b_hl_a.svg)]
 
 ```scala
-1 + (2 + 3)
+def foo(a: `A`) = ???
+
+foo(new B)
 ```
-
-```scala
-class Add(lhs: Int, rhs: Int)
-
-Add(1, Add(2, 3))
-```
-
 ---
 
 ## Subtyping
@@ -406,13 +408,9 @@ Add(1, Add(2, 3))
 .center[![](img/subtyping_a_b_c.svg)]
 
 ```scala
-1 + (2 + 3)
-```
+def foo(a: A) = ???
 
-```scala
-class Add(lhs: Int, rhs: Int)
-
-Add(1, Add(2, 3))
+foo(new B)
 ```
 
 ---
@@ -422,14 +420,26 @@ Add(1, Add(2, 3))
 .center[![](img/subtyping_a_b_c_linked.svg)]
 
 ```scala
-1 + (2 + 3)
+def foo(a: A) = ???
+
+foo(new B)
 ```
 
+
+---
+
+## Subtyping
+
+.center[![](img/subtyping_a_b_c_linked.svg)]
+
+.diff-add[
 ```scala
-class Add(lhs: Int, rhs: Int)
+def foo(a: A) = ???
 
-Add(1, Add(2, 3))
+foo(new B)
+*&#x200B;`foo(new C)`
 ```
+]
 
 ---
 
@@ -438,13 +448,10 @@ Add(1, Add(2, 3))
 .center[![](img/subtyping_a_b_c_hl_b_c.svg)]
 
 ```scala
-1 + (2 + 3)
-```
+def foo(a: A) = ???
 
-```scala
-class Add(lhs: Int, rhs: Int)
-
-Add(1, Add(2, 3))
+foo(new `B`)
+foo(new `C`)
 ```
 
 ---
@@ -454,13 +461,10 @@ Add(1, Add(2, 3))
 .center[![](img/subtyping_a_b_c_hl_a.svg)]
 
 ```scala
-1 + (2 + 3)
-```
+def foo(a: `A`) = ???
 
-```scala
-class Add(lhs: Int, rhs: Int)
-
-Add(1, Add(2, 3))
+foo(new B)
+foo(new C)
 ```
 
 ---
@@ -469,15 +473,14 @@ Add(1, Add(2, 3))
 
 .center[![](img/subtyping_a_b_c_hl_b.svg)]
 
+.diff-rm[
 ```scala
-1 + (2 + 3)
-```
+def foo(a: A) = ???
 
-```scala
-class Add(lhs: Int, rhs: Int)
-
-Add(1, `Add`(2, 3))
+*foo(new `B`)
+foo(new C)
 ```
+]
 
 ---
 
@@ -485,16 +488,14 @@ Add(1, `Add`(2, 3))
 
 .center[![](img/subtyping_a_b_c_hl_add.svg)]
 
+.diff-add[
 ```scala
-1 + (2 + 3)
+def foo(a: A) = ???
+
+*foo(new `Add`)
+foo(new C)
 ```
-
-```scala
-class Add(lhs: Int, rhs: Int)
-
-Add(1, `Add`(2, 3))
-```
-
+]
 
 ---
 
@@ -502,15 +503,14 @@ Add(1, `Add`(2, 3))
 
 .center[![](img/subtyping_a_add_c_hl_c.svg)]
 
+.diff-rm[
 ```scala
-1 + (2 + 3)
-```
+def foo(a: A) = ???
 
-```scala
-class Add(lhs: Int, rhs: Int)
-
-Add(`1`, Add(2, 3))
+foo(new Add)
+*foo(new `C`)
 ```
+]
 
 
 ---
@@ -519,14 +519,33 @@ Add(`1`, Add(2, 3))
 
 .center[![](img/subtyping_a_add_c_hl_int.svg)]
 
+.diff-add[
 ```scala
-1 + (2 + 3)
+def foo(a: A) = ???
+
+foo(new Add)
+*foo(new `Int`)
 ```
+]
+
+---
+
+## Subtyping
+
+.center[![](img/subtyping_a_add_c_hl_int.svg)]
 
 ```scala
 class Add(lhs: Int, rhs: Int)
+```
 
-Add(`1`, Add(2, 3))
+---
+
+## Subtyping
+
+.center[![](img/subtyping_a_add_c_hl_int.svg)]
+
+```scala
+class Add(lhs: `Int`, rhs: `Int`)
 ```
 
 ---
@@ -536,14 +555,9 @@ Add(`1`, Add(2, 3))
 .center[![](img/subtyping_a_add_int_hl_a.svg)]
 
 ```scala
-1 + (2 + 3)
-```
-
-```scala
 class Add(lhs: Int, rhs: Int)
-
-Add(1, Add(2, 3))
 ```
+
 
 ---
 
@@ -551,16 +565,10 @@ Add(1, Add(2, 3))
 
 .center[![](img/subtyping_a_add_int_hl_exp.svg)]
 
-```scala
-1 + (2 + 3)
-```
-
 .diff-add[
 ```scala
 *&#x200B;`class Exp`
 class Add(lhs: Int, rhs: Int)
-
-Add(1, Add(2, 3))
 ```
 ]
 
@@ -571,16 +579,10 @@ Add(1, Add(2, 3))
 
 .center[![](img/subtyping_a_add_int_hl_to_add.svg)]
 
-```scala
-1 + (2 + 3)
-```
-
 .diff-add[
 ```scala
 class Exp
 *class Add(lhs: Int, rhs: Int)` extends Exp`
-
-Add(1, Add(2, 3))
 ```
 ]
 
@@ -591,14 +593,8 @@ Add(1, Add(2, 3))
 .center[![](img/subtyping_a_add_int_hl_to_int.svg)]
 
 ```scala
-1 + (2 + 3)
-```
-
-```scala
 class Exp
 class Add(lhs: Int, rhs: Int) extends Exp
-
-Add(1, Add(2, 3))
 ```
 
 ---
@@ -607,17 +603,11 @@ Add(1, Add(2, 3))
 
 .center[![](img/subtyping_a_add_int_hl_to_num.svg)]
 
-```scala
-1 + (2 + 3)
-```
-
 .diff-add[
 ```scala
 class Exp
 class Add(lhs: Int, rhs: Int) extends Exp
 *&#x200B;`class Num(value: Int) extends Exp`
-
-Add(1, Add(2, 3))
 ```
 ]
 
@@ -627,17 +617,11 @@ Add(1, Add(2, 3))
 
 .center[![](img/subtyping_a_add_int_hl_add_num.svg)]
 
-```scala
-1 + (2 + 3)
-```
-
 .diff-rm[
 ```scala
 class Exp
 *class Add(lhs: `Int`, rhs: `Int`) extends Exp
 class Num(value: Int) extends Exp
-
-Add(1, Add(2, 3))
 ```
 ]
 
@@ -645,19 +629,13 @@ Add(1, Add(2, 3))
 
 ## Subtyping
 
-.center[![](img/subtyping_a_add_int_hl_exp.svg)]
-
-```scala
-1 + (2 + 3)
-```
+.center[![](img/subtyping_a_add_num_hl_exp.svg)]
 
 .diff-add[
 ```scala
 class Exp
 *class Add(lhs: `Exp`, rhs: `Exp`) extends Exp
 class Num(value: Int) extends Exp
-
-Add(1, Add(2, 3))
 ```
 ]
 
@@ -671,12 +649,22 @@ Add(1, Add(2, 3))
 1 + (2 + 3)
 ```
 
+```scala
+Add(1, Add(2, 3))
+```
+
+---
+
+## Subtyping
+
+.center[![](img/1_plus_2_plus_3_hl_1_2_3.svg)]
+
+```scala
+1 + (2 + 3)
+```
+
 .diff-rm[
 ```scala
-class Exp
-class Add(lhs: Exp, rhs: Exp) extends Exp
-class Num(value: Int) extends Exp
-
 *Add(`1`, Add(`2`, `3`))
 ```
 ]
@@ -693,31 +681,9 @@ class Num(value: Int) extends Exp
 
 .diff-add[
 ```scala
-class Exp
-class Add(lhs: Exp, rhs: Exp) extends Exp
-class Num(value: Int) extends Exp
-
 *Add(`Num(1)`, Add(`Num(2)`, `Num(3)`))
 ```
 ]
-
----
-
-## Subtyping
-
-.center[![](img/1_add_2_add_3.svg)]
-
-```scala
-1 + (2 + 3)
-```
-
-```scala
-class Exp
-class Add(lhs: Exp, rhs: Exp) extends Exp
-class Num(value: Int) extends Exp
-
-Add(Num(1), Add(Num(2), Num(3)))
-```
 
 ---
 
