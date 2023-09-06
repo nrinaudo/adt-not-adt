@@ -535,16 +535,6 @@ foo(new Add)
 .center[![](img/subtyping_a_add_c_hl_int.svg)]
 
 ```scala
-class Add(lhs: Int, rhs: Int)
-```
-
----
-
-## Subtyping
-
-.center[![](img/subtyping_a_add_c_hl_int.svg)]
-
-```scala
 class Add(lhs: `Int`, rhs: `Int`)
 ```
 
@@ -979,7 +969,7 @@ Eq(
   Add(Num(1), Num(2)),
   Add(Num(2), Num(1))
 ).toString
-// val res2: String = Eq@61ad30f6
+// val res2: String = Eq@79d4ff58
 ```
 
 ---
@@ -1795,23 +1785,6 @@ Sub(
 3 - (2 + 1)
 ```
 
-```scala
-Sub(
-  Num(3),
-  Add(Num(2), Num(1))
-)
-```
-
----
-
-## Adding terms: subtraction
-
-.center[![](img/exp_3_minus_2_plus_1.svg)]
-
-```scala
-3 - (2 + 1)
-```
-
 .diff-add[
 ```scala
 Sub(
@@ -2199,23 +2172,6 @@ Eq(
 (1 + 2) = (3 - 1)
 ```
 
-```scala
-Eq(
-  Add(Num(1), Num(2)),
-  Sub(Num(3), Num(1))
-)
-```
-
----
-
-## Adding interpreters: evaluation
-
-.center[![](img/exp_1_plus_2_eq_3_minus_1.svg)]
-
-```scala
-(1 + 2) = (3 - 1)
-```
-
 .diff-add[
 ```scala
 Eq(
@@ -2546,7 +2502,19 @@ def print[T](exp: Exp[T]): String = exp match
 
 ```scala
 def print[T](exp: Exp[T]): String = exp match
-  case `i: Num` => `i.value`.toString
+  case `i: Num` => i.value.toString
+  case a: Add => s"(${print(a.lhs)} + ${print(a.rhs)})"
+  case m: Sub => s"(${print(m.lhs)} - ${print(m.rhs)})"
+  case e: Eq  => s"(${print(e.lhs)} = ${print(e.rhs)})"
+```
+
+---
+
+## Pretty printing
+
+```scala
+def print[T](exp: Exp[T]): String = exp match
+  case i: Num => `i.value`.toString
   case a: Add => s"(${print(a.lhs)} + ${print(a.rhs)})"
   case m: Sub => s"(${print(m.lhs)} - ${print(m.rhs)})"
   case e: Eq  => s"(${print(e.lhs)} = ${print(e.rhs)})"
@@ -2996,6 +2964,40 @@ def eval[T](exp: Exp[T]): T = exp match
 ```
 ]
 
+---
+
+## Exhaustivity
+
+.center[![](img/exp_1_plus_2_eq_3_minus_1.svg)]
+
+```scala
+(1 + 2) = (3 - 1)
+```
+
+```scala
+eval(Eq(
+  Add(Num(1), Num(2)),
+  Sub(Num(3), Num(1))
+))
+```
+
+---
+
+## Exhaustivity
+
+.center[![](img/exp_1_plus_2_eq_3_minus_1.svg)]
+
+```scala
+(1 + 2) = (3 - 1)
+```
+
+```scala
+eval(Eq(
+  Add(Num(1), Num(2)),
+  Sub(Num(3), Num(1))
+))
+// val res1: Boolean = false
+```
 
 ---
 
@@ -3068,6 +3070,18 @@ enum Exp[T]:
 *&#x200B;`  `case Eq(lhs: Exp[Int], rhs: Exp[Int]) extends Exp[Boolean]
 ```
 ]
+
+---
+
+## ADTs
+
+```scala
+enum Exp[T]:
+  case Num(value: Int) `extends Exp[Int]`
+  case Add(lhs: Exp[Int], rhs: Exp[Int]) `extends Exp[Int]`
+  case Sub(lhs: Exp[Int], rhs: Exp[Int]) `extends Exp[Int]`
+  case Eq(lhs: Exp[Int], rhs: Exp[Int]) `extends Exp[Boolean]`
+```
 
 ???
 
@@ -3434,24 +3448,6 @@ Eq(
 ```
 ]
 
-
----
-
-## Adding terms: multiplication
-
-.center[![](img/3_plus_3_eq_2_mult_3.svg)]
-
-```scala
-(3 + 3) = (2 * 3)
-```
-
-```scala
-Eq(
-  Add(Num(3), Num(3)),
-  Mult(Num(2), Num(3))
-)
-```
-
 ---
 
 ## Adding terms: multiplication
@@ -3486,7 +3482,7 @@ print(Eq(
   Add(Num(3), Num(3)),
   Mult(Num(2), Num(3))
 ))
-// val res2: String = ((3 + 3) = (2 * 3))
+// val res3: String = ((3 + 3) = (2 * 3))
 ```
 
 ---
@@ -3570,7 +3566,7 @@ eval(Eq(
   Add(Num(3), Num(3)),
   Mult(Num(2), Num(3))
 ))
-// val res3: Boolean = true
+// val res4: Boolean = true
 ```
 
 ---
@@ -4021,23 +4017,6 @@ Eq(
 (1 + 2) = (3 - -1)
 ```
 
-```scala
-Eq(
-  Add(Num(1), Num(2)),
-  Sub(Num(3), Num(-1))
-)
-```
-
----
-
-## Adding interpreters: rewriting
-
-.center[![](img/exp_1_plus_2_eq_3_minus_neg1.svg)]
-
-```scala
-(1 + 2) = (3 - -1)
-```
-
 .diff-add[
 ```scala
 *&#x200B;`print(`Eq(
@@ -4062,7 +4041,7 @@ print(Eq(
   Add(Num(1), Num(2)),
   Sub(Num(3), Num(-1))
 ))
-// val res5: String = ((1 + 2) = (3 - -1))
+// val res6: String = ((1 + 2) = (3 - -1))
 ```
 
 ---
@@ -4121,7 +4100,7 @@ print(opt(Eq(
   Add(Num(1), Num(2)),
   Sub(Num(3), Num(-1))
 )))
-// val res6: String = ((1 + 2) = (3 + 1))
+// val res7: String = ((1 + 2) = (3 + 1))
 ```
 
 ---
