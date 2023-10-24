@@ -1,0 +1,19 @@
+digraph {
+    one1[label="1" class="value" style="invis"]
+    two1[label="2" class="value" style="invis"]
+    add1[label="+" class="operator" style="invis"]
+
+    add1 -> one1[style="invis"]
+    add1 -> two1[style="invis"]
+
+    two2[label="2" class="value" style="invis"]
+    one2[label="1" class="value" style="invis"]
+    add2[label="+" class="operator" style="invis"]
+
+    add2 -> two2[style="invis"]
+    add2 -> one2[style="invis"]
+
+    eq[label="=" class="operator" style="invis"]
+    eq -> add1[style="invis"]
+    eq -> add2[style="invis"]
+}

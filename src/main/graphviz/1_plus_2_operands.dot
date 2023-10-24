@@ -1,0 +1,11 @@
+digraph {
+    add1[label="+" class="operator" class="disabled"]
+    one[label="1" class="value"]
+    two[label="2" class="value"]
+
+    add1 -> one
+    add1 -> two
+
+    c[style="invis"]
+    two -> c[style="invis"]
+}

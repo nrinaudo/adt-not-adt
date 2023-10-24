@@ -1,0 +1,11 @@
+digraph {
+    three[label="3" class="value" style="invis"]
+    negone[label="-1" class="value" style="invis"]
+    sub[label="-" class="operator"]
+
+    sub -> three[style="invis"]
+    sub -> negone[style="invis"]
+
+    c[style="invis"]
+    negone -> c[style="invis"]
+}

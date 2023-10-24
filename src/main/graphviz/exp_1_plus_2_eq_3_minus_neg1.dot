@@ -1,0 +1,17 @@
+digraph {
+    one[label="Num(1)" class="value"]
+    two[label="Num(2)" class="value"]
+    add[label="Add" class="operator"]
+    add -> one
+    add -> two
+
+    three[label="Num(3)" class="value"]
+    negone[label="Num(-1)" class="value"]
+    sub[label="Sub" class="operator"]
+    sub -> three
+    sub -> negone
+
+    eq[label="Eq" class="operator"]
+    eq -> add
+    eq -> sub
+}
